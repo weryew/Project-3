@@ -1,6 +1,8 @@
 <template>
   <div >
-    <div v-if="restos">
+     <div v-if="restos">
+    <google-map :restos="restos" ></google-map>
+   
       <ul>
         <li v-for="(resto,index) in restos" :key="index">
           <resto-card :resto="resto"></resto-card>
@@ -14,6 +16,7 @@
 <script>
 import api from "../api";
 import RestoCard from "../components/RestoCard";
+import GoogleMap from "../components/GoogleMap";
 export default {
   data() {
     return {
@@ -26,7 +29,8 @@ export default {
     });
   },
   components: {
-    RestoCard
+    RestoCard,
+    GoogleMap
   }
 };
 </script>

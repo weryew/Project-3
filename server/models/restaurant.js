@@ -4,7 +4,10 @@ const Schema = mongoose.Schema;
 const restaurantSchema = new Schema({
   name: String,
   dishPrice: String,
-  address: String,
+  address: {
+    lat: Number,
+    lng: Number
+  },
   contacts: Object,
   url: String,
   reviews: Object,

@@ -9,6 +9,12 @@ import router from "./router";
 // import "bootstrap-vue/dist/bootstrap-vue.css";
 // Vue.use(BootstrapVue);
 
+import * as VueGoogleMaps from "vue2-google-maps";
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: "AIzaSyAXj564uuBITWhSeemTghzzO16gcHE5hxU"
+  }
+});
 Vue.use(Buefy);
 Vue.config.productionTip = false;
 
