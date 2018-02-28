@@ -1,9 +1,10 @@
-var express = require("express");
-var path = require("path");
-var favicon = require("serve-favicon");
-var logger = require("morgan");
-var bodyParser = require("body-parser");
+const express = require("express");
+const path = require("path");
+const favicon = require("serve-favicon");
+const logger = require("morgan");
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+
 mongoose.connect("mongodb://localhost/coolAParis");
 
 const passport = require("passport");
@@ -12,13 +13,17 @@ const config = require("./config");
 const { Strategy, ExtractJwt } = require("passport-jwt");
 const cors = require("cors");
 
-var app = express();
+const app = express();
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger("dev"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(passport.initialize());
@@ -51,7 +56,7 @@ passport.use(strategy);
 
 app.use("/", require("./routes/index"));
 app.use("/api", require("./routes/auth"));
-
+app.use("/api/dishes", require("./routes/dishes"));
 app.get(
   "/api/secret",
   // this is protecting the route and giving us access to

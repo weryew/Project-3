@@ -2,8 +2,9 @@
 <nav class="navbar is-transparent">
   <div class="navbar-brand">
     <router-link class="navbar-item" to="/">
+    CoolAParis
     <!-- Add logo here  -->
-     <img src="" alt="logo" width="112" height="28"> 
+     <!-- <img src="" alt="logo" width="112" height="28">  -->
     </router-link>
     <div
       class="navbar-burger burger"
