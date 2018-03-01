@@ -16,18 +16,31 @@
 </ul>
 <h2>Time to cook</h2>
 <span>{{recipe.cookTime}}</span>
+<h3>How much did you like this recipe?</h3>
+<star-rating v-model="recipe.rating"  ></star-rating>
+
+<button @click="saveRecipe">save </button>
+
   </div>
   </div>
 </template>
 
 <script>
 import api from "../api";
+import StarRating from "vue-star-rating";
 export default {
   data() {
     return {
       dish: null,
       recipe: null
     };
+  },
+  methods: {
+    saveRecipe() {
+      api
+        .addRating(this.$route.params.id, this.recipe.rating)
+        .then(recipe => console.log(recipe.rating));
+    }
   },
   created() {
     api.getDish(this.$route.params.id).then(dish => {
@@ -36,6 +49,9 @@ export default {
       api.getRecipe(this.$route.params.id).then(recipe => {
         this.recipe = recipe;
       });
+  },
+  components: {
+    StarRating
   }
 };
 </script>

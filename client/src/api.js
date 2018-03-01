@@ -91,5 +91,14 @@ export default {
         console.err(err);
         throw err;
       });
+  },
+  addRating(id, rating) {
+    return service
+      .post(`dishes/${id}/recipeRating`, { rating })
+      .then(res => res.data)
+      .catch(err => {
+        console.err(err);
+        throw err;
+      });
   }
 };

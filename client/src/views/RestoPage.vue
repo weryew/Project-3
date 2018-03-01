@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="content section">
     <div v-if="resto">
 <h1 > {{resto.name}}</h1>
     <img :src="resto.photo">  
-<h2>Dish Price</h2>
+<h3>Dish Price</h3>
 {{resto.dishPrice}}
   </div>
   </div>

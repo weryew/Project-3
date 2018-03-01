@@ -1,8 +1,10 @@
 const express = require("express");
+const passport = require("passport");
 const router = express.Router();
 const Dish = require("../models/dish");
 const Recipe = require("../models/recipe");
 const Restaurant = require("../models/restaurant");
+const config = require("../config");
 
 //get all the dishes with the name:dishname
 router.get("/:query", (req, res, next) => {
@@ -60,16 +62,30 @@ router.get("/oneRest/:restId", (req, res, next) => {
   });
 });
 
-//add a review to a recipe
-// router.post("/:dishId/:recipeId", (req, res, next) => {
-//   Recipe.findById(req.params.recipeId, (err, recipe) => {
-//     if (err) {
-//       next(err);
-//     }
-//     const review = res.body.review;
-//     const recipeWithReview = new recipe({
-//       recipe
-//     });
-//   });
-// });
+//add a rating to a recipe
+router.post(
+  "/:dishId/recipeRating",
+  passport.authenticate("jwt", config.jwtSession),
+  (req, res, next) => {
+    Recipe.findOne({ _dish: req.params.dishId }, (err, recipe) => {
+      if (err) return next(err);
+      recipe.ratings = recipe.ratings || [];
+      const rating = recipe.ratings.find(r => r._user.equals(req.user._id));
+      if (rating) {
+        rating.value = req.body.rating;
+      } else {
+        recipe.ratings.push({
+          _user: req.user._id,
+          value: req.body.rating
+        });
+      }
+
+      recipe.save(err => {
+        if (err) return next(err);
+        res.json(recipe);
+      });
+    });
+  }
+);
+
 module.exports = router;

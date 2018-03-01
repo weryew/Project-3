@@ -1,29 +1,17 @@
 <template>
-  <div class="content section">
-    <div class="card">
-  <div class="card-image">
-    <figure class="image is-4by3">
-      <img :src="dish.photo" alt="Placeholder image">
-    </figure>
-  </div>
-  <div class="card-content">
-    <div class="media">
-      <div class="media-content">
-        <p class="title is-4" v-if="dish">{{dish.name}} </p>
-    
-      </div>
-    </div>
+<div class="content section">
+    <div v-if="dish">
+<h1 > {{dish.name}}</h1>
+    <img :src="dish.photo">  
 
-    <div class="content">
-   {{dish.description}} 
-    </div>
-  </div>
-</div>
-<br>
-
+<h1>{{dish.description}}</h1>
+  
+  <br>
 <router-link :to="`/${dish._id}/recipe`" class="button is-primary">Find a recipe</router-link> 
 <span> or </span>  
 <router-link :to="`/${dish._id}/resto`" class="button is-primary">Find a restaurant</router-link>
+
+</div>
 
   </div>
 </template>
@@ -33,7 +21,7 @@ import api from "../api";
 export default {
   data() {
     return {
-      dish: ""
+      dish: null
     };
   },
   created() {
