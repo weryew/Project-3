@@ -16,7 +16,7 @@ router.get("/:query", (req, res, next) => {
     const dishes = results.filter(dish => {
       return dish.name.toUpperCase().indexOf(query) !== -1;
     });
-    console.log(dishes);
+
     res.json(dishes);
   });
 });
@@ -58,27 +58,41 @@ router.get("/oneRest/:restId", (req, res, next) => {
     if (err) {
       next(err);
     }
+    // const dishes = rest.dishes.forEach(dish => {
+    //   Dish.findById(dish._dish, (err, dish) => {
+    //     if (err) throw err;
+    //   });
+    // });
+    // console.log(dishes);
     res.json(rest);
   });
 });
 
-//add a rating to a recipe
+//add a reviewto a recipe
 router.post(
-  "/:dishId/recipeRating",
+  "/:dishId/recipeReview",
   passport.authenticate("jwt", config.jwtSession),
   (req, res, next) => {
     Recipe.findOne({ _dish: req.params.dishId }, (err, recipe) => {
       if (err) return next(err);
       recipe.ratings = recipe.ratings || [];
       const rating = recipe.ratings.find(r => r._user.equals(req.user._id));
-      if (rating) {
+      const comment = recipe.ratings.find(r => r._user.equals(req.user._id));
+      if (rating && comment) {
         rating.value = req.body.rating;
+        rating.comment = req.body.comment;
       } else {
         recipe.ratings.push({
           _user: req.user._id,
-          value: req.body.rating
+          value: req.body.rating,
+          comment: req.body.comment
         });
       }
+      let s = 0;
+      recipe.ratings.forEach(r => {
+        s = s + parseInt(r.value);
+      });
+      recipe.average = s / recipe.ratings.length;
 
       recipe.save(err => {
         if (err) return next(err);
@@ -87,5 +101,14 @@ router.post(
     });
   }
 );
+
+//get all the reviews
+router.get("/:dishId/reviews", (req, res, next) => {
+  Recipe.findOne({ _dish: req.params.dishId }, (err, recipe) => {
+    if (err) return next(err);
+
+    res.json(recipe.ratings);
+  });
+});
 
 module.exports = router;

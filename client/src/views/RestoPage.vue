@@ -1,11 +1,16 @@
 <template>
   <div class="content section">
     <div v-if="resto">
-<h1 > {{resto.name}}</h1>
-    <img :src="resto.photo">  
-<h3>Dish Price</h3>
-{{resto.dishPrice}}
-  </div>
+      <h1 > {{resto.name}}</h1>
+      <img :src="resto.photo">  
+      <h2>{{resto.url}}</h2>
+  
+
+
+    </div>
+    <div v-else>
+      Loading...
+    </div>
   </div>
  
 </template>
@@ -15,7 +20,8 @@ import api from "../api";
 export default {
   data() {
     return {
-      resto: null
+      resto: null,
+      dish: null
     };
   },
   created() {

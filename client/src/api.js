@@ -50,55 +50,54 @@ export default {
     return service
       .get(`/dishes/${query}`)
       .then(res => res.data)
-      .catch(err => {
-        console.error(err);
-        throw err;
-      });
+      .catch(errHandler);
   },
   //get details of a dish
   getDish(id) {
     return service
       .get(`/dishes/oneDish/${id}`)
       .then(res => res.data)
-      .catch(err => {
-        console.error(err);
-        throw err;
-      });
+      .catch(errHandler);
   },
+  //get recipe details
   getRecipe(id) {
     return service
       .get(`/dishes/${id}/recipe`)
       .then(res => res.data[0])
-      .catch(err => {
-        console.err(err);
-        throw err;
-      });
+      .catch(errHandler);
   },
+  //get restaurants list
   getRestos(id) {
     return service
       .get(`/dishes/${id}/restaurants`)
       .then(res => res.data)
-      .catch(err => {
-        console.err(err);
-        throw err;
-      });
+      .catch(errHandler);
   },
+  //get details of one restaurant
   getResto(id) {
     return service
       .get(`/dishes/oneRest/${id}`)
       .then(res => res.data)
-      .catch(err => {
-        console.err(err);
-        throw err;
-      });
+      .catch(errHandler);
   },
-  addRating(id, rating) {
+  //add review to a recipe
+  addReview(id, rating, comment) {
     return service
-      .post(`dishes/${id}/recipeRating`, { rating })
+      .post(`dishes/${id}/recipeReview`, { rating, comment })
       .then(res => res.data)
-      .catch(err => {
-        console.err(err);
-        throw err;
-      });
+      .catch(errHandler);
+  },
+  //get all the reviews of a recipe
+  getReviews(id) {
+    return service
+      .get(`dishes/${id}/reviews`)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+  addResto(resto) {
+    return service
+      .post("/restaurants", resto)
+      .then(res => res.data)
+      .catch(errHandler);
   }
 };

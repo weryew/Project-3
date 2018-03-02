@@ -8,6 +8,7 @@ const ratingSchema = new Schema({
     ref: "User",
     unique: true
   },
+  comment: String,
   value: {
     type: Number,
     min: 1,
@@ -19,13 +20,14 @@ const recipeSchema = new Schema({
   ingredients: Array,
   cookTime: String,
   prepTime: String,
-  Tools: Array,
-  Reviews: Object,
+  tools: Array,
   ratings: [ratingSchema],
+  average: Number,
   _dish: {
     type: Schema.Types.ObjectId,
     ref: "Dish"
   }
 });
 recipeSchema.plugin(arrayUniquePlugin);
+
 module.exports = mongoose.model("Recipe", recipeSchema);

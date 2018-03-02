@@ -1,16 +1,22 @@
 <template>
   <div >
-     <div v-if="restos">
-       
-    <google-map :restos="restos" ></google-map>
-   <div class="section">
-      <ul>
-        <li v-for="(resto,index) in restos" :key="index">
-          <resto-card :resto="resto"></resto-card>
-        </li>
-      </ul>
-</div>
-</div>
+    <div v-if="restos">  
+      <google-map :restos="restos" ></google-map>
+        <div class="section">
+        <ul>
+          <li v-for="(resto,index) in restos" :key="index">
+            <resto-card :resto="resto"></resto-card>
+          </li>
+        </ul>
+        </div>
+    </div>
+    <div >
+     
+        <router-link :to="`/newResto`">
+        Add Restaurant
+        </router-link>
+  
+    </div>
   </div>
 </template>
 

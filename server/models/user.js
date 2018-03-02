@@ -3,7 +3,11 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  name: String
+  name: String,
+  role: {
+    type: String,
+    enum: ["user", "admin"]
+  }
 });
 
 userSchema.plugin(passportLocalMongoose);

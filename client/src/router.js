@@ -8,12 +8,17 @@ import DishPage from "./views/DishPage.vue";
 import RecipePage from "./views/RecipePage.vue";
 import RestoList from "./views/RestoList.vue";
 import RestoPage from "./views/RestoPage.vue";
+import NewResto from "./views/NewResto.vue";
 
 Vue.use(Router);
 
 export default new Router({
   mode: "history",
   routes: [
+    {
+      path: "/newResto",
+      component: NewResto
+    },
     {
       path: "/",
       component: Home
