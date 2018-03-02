@@ -12,7 +12,8 @@ import router from "./router";
 import * as VueGoogleMaps from "vue2-google-maps";
 Vue.use(VueGoogleMaps, {
   load: {
-    key: "AIzaSyAXj564uuBITWhSeemTghzzO16gcHE5hxU"
+    key: "AIzaSyAXj564uuBITWhSeemTghzzO16gcHE5hxU",
+    libraries: "places"
   }
 });
 Vue.use(Buefy);

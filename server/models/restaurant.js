@@ -18,10 +18,7 @@ const Schema = mongoose.Schema;
 
 const restaurantSchema = new Schema({
   name: String,
-  address: {
-    lat: Number,
-    lng: Number
-  },
+  address: String,
   photo: String,
   url: String,
   _dish: {

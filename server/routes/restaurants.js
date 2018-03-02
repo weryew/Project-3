@@ -13,10 +13,13 @@ const Restaurant = require("../models/restaurant");
 
 router.post("/restaurants", (req, res, next) => {
   console.log("add resto");
-  const { name, url } = req.body;
+  const { name, url, address, photo, _dish } = req.body;
   const restaurant = new Restaurant({
     name,
-    url
+    url,
+    address,
+    photo,
+    _dish
   });
   Restaurant.create(restaurant, err => {
     if (err) return next(err);
