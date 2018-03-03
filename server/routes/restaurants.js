@@ -12,19 +12,17 @@ const Restaurant = require("../models/restaurant");
 // }
 
 router.post("/restaurants", (req, res, next) => {
-  console.log("add resto");
-  const { name, url, address, photo, _dish } = req.body;
+  const { name, url, address, photo, dishes } = req.body;
   const restaurant = new Restaurant({
     name,
     url,
     address,
     photo,
-    _dish
+    dishes
   });
   Restaurant.create(restaurant, err => {
     if (err) return next(err);
     res.json(restaurant);
-    console.log(restaurant);
   });
 });
 module.exports = router;

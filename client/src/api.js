@@ -94,9 +94,17 @@ export default {
       .then(res => res.data)
       .catch(errHandler);
   },
+  //add a restaurant
   addResto(resto) {
     return service
       .post("/restaurants", resto)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+  //add a dish when adding a restaurant
+  addDish(dish) {
+    return service
+      .post("/dishes/newDish", dish)
       .then(res => res.data)
       .catch(errHandler);
   }

@@ -44,7 +44,7 @@ router.get("/:dishId/recipe", (req, res, next) => {
 
 //get all the restaurants which prepare the dish
 router.get("/:dishId/restaurants", (req, res, next) => {
-  Restaurant.find({ _dish: req.params.dishId }, (err, restaurants) => {
+  Restaurant.find({ dishes: req.params.dishId }, (err, restaurants) => {
     if (err) {
       next(err);
     }
@@ -111,4 +111,17 @@ router.get("/:dishId/reviews", (req, res, next) => {
   });
 });
 
+//add a dish
+router.post("/newDish", (req, res, next) => {
+  const { name, photo, description } = req.body;
+  const dish = new Dish({
+    name,
+    photo,
+    description
+  });
+  Dish.create(dish, err => {
+    if (err) return next(err);
+    res.json(dish);
+  });
+});
 module.exports = router;

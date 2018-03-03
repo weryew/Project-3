@@ -5,23 +5,24 @@
         <b-field label="Restaurant name">
           <b-input v-model="name"></b-input>
         </b-field>
-        <b-field label="url" >
-          <b-input maxlength="30" v-model="url" required icon="account"></b-input>
-        </b-field>
-      <b-field label="photo" >
-        <b-input type="file" class="form-control-file"  name="photo" v-model="photo">   </b-input>  
-      </b-field>
-      <!-- find Address -->
-      <b-field label="address" >
-        <gmap-autocomplete ref="address"
-            id="map"
-            classname="form-control"
-            placeholder="Please type your address"
-            v-on:placechanged="getAddressData"
-            country="sg"
-        >
+            
+      <b-field label="Address" >
+      <gmap-autocomplete
+      placeholder="enter your address"
+        @place_changed="setPlace" required>
       </gmap-autocomplete>
       </b-field> 
+         <b-field label="Photo" >
+        <b-input type="file" class="form-control-file"  name="photo" v-model="photo">   </b-input>  
+      </b-field>
+        <b-field label="Url" >
+          <b-input maxlength="30" v-model="url" required ></b-input>
+        </b-field>
+   
+     <b-field label="Dish" >
+          <b-input  v-model="dish" required ></b-input>
+        </b-field>
+
       <button class="button is-primary" >Save Restaurant</button>
     </form>
     </section>
@@ -35,11 +36,18 @@ import VueGoogleAutocomplete from "vue-google-autocomplete";
 export default {
   data() {
     return {
+      dishes: [],
+      dish: "",
       name: "",
       url: "",
       photo: "",
-      address: "",
-      _dish: ""
+      lat: "",
+      lng: "",
+      place: "",
+      address: {
+        lat: 0,
+        lng: 0
+      }
     };
   },
   // mounted() {
@@ -50,25 +58,47 @@ export default {
   methods: {
     saveResto() {
       api
-        .addResto({
-          name: this.name,
-          url: this.url,
-          photo: this.photo,
-          address: this.address,
-          _dish: this._dish
+        .search(this.dish)
+        .then(results => {
+          if (results.length === 0) {
+            console.log("empty");
+            api.addDish(this.dish).then();
+            return api.addResto({
+              name: this.name,
+              url: this.url,
+              photo: this.photo,
+              address: {
+                lat: this.lat,
+                lng: this.lng
+              },
+              dishes: this.dishes
+            });
+          } else {
+            results.forEach(dish => {
+              console.log(dish._id);
+              this.dishes.push(dish._id);
+            });
+
+            return api.addResto({
+              name: this.name,
+              url: this.url,
+              photo: this.photo,
+              address: {
+                lat: this.lat,
+                lng: this.lng
+              },
+              dishes: this.dishes
+            });
+          }
         })
         .then(resto => {
           this.$router.push(`/resto/${resto._id}`);
         });
     },
-    /**
-     * When the location found
-     * @param {Object} addressData Data of the found location
-     * @param {Object} placeResultData PlaceResult object
-     * @param {String} id Input container ID
-     */
-    getAddressData(addressData, placeResultData, id) {
-      this.address = addressData;
+    setPlace(place) {
+      this.place = place;
+      this.lat = place.geometry.viewport.b.b;
+      this.lng = place.geometry.viewport.f.b;
     }
   },
   components: { VueGoogleAutocomplete }

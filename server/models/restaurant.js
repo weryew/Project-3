@@ -18,13 +18,15 @@ const Schema = mongoose.Schema;
 
 const restaurantSchema = new Schema({
   name: String,
-  address: String,
+  address: Object,
   photo: String,
   url: String,
-  _dish: {
-    type: Schema.Types.ObjectId,
-    ref: "Dish"
-  }
+  dishes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Dish"
+    }
+  ]
   //  reviews: [reviewSchema]
 });
 
