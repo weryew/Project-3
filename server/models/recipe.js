@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const arrayUniquePlugin = require("mongoose-unique-array");
 const Schema = mongoose.Schema;
+const User = require("./user");
+const Dish = require("./dish");
 
 const ratingSchema = new Schema({
   _user: {
@@ -17,10 +19,12 @@ const ratingSchema = new Schema({
 });
 
 const recipeSchema = new Schema({
+  time: String,
+  person: String,
+  easiness: String,
   ingredients: Array,
-  cookTime: String,
-  prepTime: String,
   tools: Array,
+  directions: Array,
   ratings: [ratingSchema],
   average: Number,
   _dish: {

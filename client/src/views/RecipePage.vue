@@ -1,33 +1,71 @@
 <template>
-  <div class="content section">
-    <h1 v-if="dish">How to cook {{dish.name}}?</h1>
+<div id="content" role="main"><section class="section">
+  <div class="container" >
+    
+    <h2 v-if="dish" class="courgette vert" align="center">How to cook {{dish.name}}?</h2>
 
     <div v-if="recipe " >
-<h2>Rating</h2>{{recipe.average}}
-<h2>Ingredients</h2>
+      <div align="center">
+        <div class="section container">
+        <article class="col col-3">
+        <button type="button" class="btn btn-default btn-circle"> <span class="vert glyphicon glyphicon-time"></span></button>
+    <p> {{recipe.time}}</p>
+        </article>
+         <article class="col col-3 col-middle">
+        <button type="button" class="btn btn-default btn-circle"><span class=" vert glyphicon glyphicon-cutlery"></span></button>
+ <p> {{recipe.person}}</p>
+ </article>
+        <article class="col col-3">
+        <button type="button" class="btn btn-default btn-circle"><span class=" vert glyphicon glyphicon-stats"></span></button>
+    <p> {{recipe.easiness}}</p>    
+    </article> 
+      <div class="clearfix"></div>
+        </div>
+        <hr>
+<div class="section">
+<h4 class="courgette vert" >Ingredients</h4>
 <ul>
   <li v-for="(ingredient,index) in recipe.ingredients" :key="index">
 {{ingredient}}
   </li>
 </ul>
-<h2>Tools</h2>
+</div>
+<div class="section">
+<h4 class="courgette vert">Tools</h4>
 <ul>
   <li v-for="(tool,index) in recipe.tools" :key="index">
 {{tool}}
   </li>
 </ul>
-<h2>Time to cook</h2>
-<span>{{recipe.cookTime}}</span>
-
+</div>
+<div class="section">
+<h4 class="courgette vert">Directions</h4>
+<ul>
+  <li v-for="(direction,index) in recipe.directions" :key="index">
+    <h5 class="courgette">- Step {{index+1}} -</h5>
+ <p>{{direction}}</p>
+  </li>
+</ul>
+</div>
+</div>
+<hr>
+<br>
+<br>
 <!-- Add a review -->
 <div>
-  <h3>How much did you like this recipe?</h3>
+  <h5 class="courgette ">How much did you like this recipe?</h5>
+  <br>
     <star-rating v-model="rating"  ></star-rating>
     <br>
-    <textarea type="text" v-model="comment" placeholder="Add your comment here"></textarea>
     <br>
+    <textarea style="background-color:#00000005" rows="5" class="input-block-level form-control" type="text" v-model="comment" placeholder="Add your comment here"></textarea>
+    <br>
+    <br>
+
     <div v-if="rating && comment">
-      <button @click="saveReview">save review</button>
+      <button @click="saveReview" id="btn" >
+        <span style="color:white" class="courgette">save review</span>
+        </button>
     </div>
 </div>
 <!-- List of reviews -->
@@ -37,6 +75,8 @@
 </div>
 </div> 
 </div>
+</div>
+</section>
 </div>
 </template>
 
@@ -76,3 +116,27 @@ export default {
   }
 };
 </script>
+<style>
+.btn-circle {
+  width: 90px;
+  height: 90px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 24px;
+  line-height: 1.428571429;
+  border-radius: 45px;
+  background-color: #e5e5e5;
+}
+.col {
+  float: left;
+}
+.col-3 {
+  width: 30%;
+}
+.col-middle {
+  margin: 0% 10%;
+}
+.clearfix {
+  clear: both;
+}
+</style>

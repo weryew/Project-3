@@ -87,6 +87,13 @@ export default {
       .then(res => res.data)
       .catch(errHandler);
   },
+  //add review to a resto
+  // addReviewResto(id, rating, comment) {
+  //   return service
+  //     .post(`dishes/${id}/restoReview`, { rating, comment })
+  //     .then(res => res.data)
+  //     .catch(errHandler);
+  // },
   //get all the reviews of a recipe
   getReviews(id) {
     return service

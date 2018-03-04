@@ -22,6 +22,7 @@
   </section> -->
 
 <template>
+<section class="section container">
   <div  align="center">
     <h2>Sign Up</h2>
     <br>
@@ -64,10 +65,11 @@
                       placeholder="Enter your password">
         </b-form-input>
       </b-form-group>
-      <b-button type="submit" variant="primary">Sign up</b-button>
+      <b-button type="submit" id="btn">Sign up</b-button>
     </b-form>
     </b-card>
   </div>
+  </section>
 </template>
 
 <script>

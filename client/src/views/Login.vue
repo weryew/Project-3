@@ -23,7 +23,8 @@
   </section> -->
 
 <template>
-  <div  align="center">
+<section class="section container">
+  <div  align="center" >
     <h2>Log In</h2>
     <br>
     <b-card style="width:500px">
@@ -39,7 +40,7 @@
                    >
         <b-form-input id="exampleInput1"
                       type="text"
-                  
+                  icon="account"
                       v-model="username"
                       required
                       maxlength="30"
@@ -56,10 +57,11 @@
                       placeholder="Enter your password">
         </b-form-input>
       </b-form-group>
-      <b-button type="submit" variant="primary">Login</b-button>
+      <b-button type="submit" id="btn">Login</b-button>
     </b-form>
     </b-card>
   </div>
+  </section>
 </template>
 
 <script>

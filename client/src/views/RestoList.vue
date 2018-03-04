@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div class="section container" >
     <div v-if="restos">  
       <google-map :restos="restos" ></google-map>
         <div class="section">

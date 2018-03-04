@@ -25,4 +25,5 @@ router.post("/restaurants", (req, res, next) => {
     res.json(restaurant);
   });
 });
+
 module.exports = router;

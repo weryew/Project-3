@@ -111,6 +111,42 @@ router.get("/:dishId/reviews", (req, res, next) => {
   });
 });
 
+//add a review to a resto
+// router.post(
+//   "/:dishId/restoReview",
+//   passport.authenticate("jwt", config.jwtSession),
+//   (req, res, next) => {
+//     Restaurant.findOne({ dishes: req.params.dishId }, (err, restaurant) => {
+//       if (err) return next(err);
+//       restaurant.ratings = restaurant.ratings || [];
+//       const rating = restaurant.ratings.find(r => r._user.equals(req.user._id));
+//       const comment = restaurant.ratings.find(r =>
+//         r._user.equals(req.user._id)
+//       );
+//       if (rating && comment) {
+//         rating.value = req.body.rating;
+//         rating.comment = req.body.comment;
+//       } else {
+//         restaurant.ratings.push({
+//           _user: req.user._id,
+//           value: req.body.rating,
+//           comment: req.body.comment
+//         });
+//       }
+//       let s = 0;
+//       restaurant.ratings.forEach(r => {
+//         s = s + parseInt(r.value);
+//       });
+//       restaurant.average = s / restaurant.ratings.length;
+
+//       restaurant.save(err => {
+//         if (err) return next(err);
+//         res.json(restaurant);
+//       });
+//     });
+//   }
+// );
+
 //add a dish
 router.post("/newDish", (req, res, next) => {
   const { name, photo, description } = req.body;

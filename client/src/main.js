@@ -1,10 +1,12 @@
 import Vue from "vue";
+import BootstrapVue from "bootstrap-vue";
+import Carousel3d from "vue-carousel-3d";
 import Buefy from "buefy";
 import "buefy/lib/buefy.css";
 import App from "./App.vue";
 import router from "./router";
-import BootstrapVue from "bootstrap-vue";
 
+Vue.use(Carousel3d);
 Vue.use(BootstrapVue);
 
 import "bootstrap/dist/css/bootstrap.css";

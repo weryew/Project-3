@@ -1,11 +1,7 @@
-<template>
-<nav class="navbar is-transparent">
+<template>   
+<nav class="navbar container courgette">
   <div class="navbar-brand">
-    <router-link class="navbar-item" to="/">
-    CoolAParis
-    <!-- Add logo here  -->
-     <!-- <img src="" alt="logo" width="112" height="28">  -->
-    </router-link>
+
     <div
       class="navbar-burger burger"
       :class="{ 'is-active': isActive }"
@@ -18,7 +14,11 @@
   </div>
 
   <div class="navbar-menu" :class="{ 'is-active': isActive }">
+
     <div class="navbar-start">
+          <router-link class="navbar-item " to="/">
+  Home
+    </router-link>
       <router-link
         class="navbar-item" to="/about"
         @click.native="isActive = false"
@@ -27,36 +27,32 @@
       </router-link>
     </div>
 
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="field is-grouped" v-if="!$root.user">
-          <p class="control">
+    <div class="navbar-end" v-if="!$root.user">   
             <router-link
               class="navbar-item" to="/login"
               @click.native="isActive = false"
             >
               Login
             </router-link>
-          </p>
-          <p class="control">
+    
+     
             <router-link
               class="navbar-item" to="/signup"
               @click.native="isActive = false"
             >
               Signup
             </router-link>
-          </p>
         </div>
-     <div class="field is-grouped" v-else>
-          <p class="control">
-            <a class="navbar-item" @click="logout">
+       
+     <div class="navbar-end navbar-item" v-else> 
+            <a  @click="logout">
               Logout
             </a>
-          </p>
+        
         </div>
       </div>
-    </div>
-  </div>
+   
+
 </nav>
 </template>
 
@@ -78,3 +74,13 @@ export default {
   }
 };
 </script>
+<style>
+.navbar-menu {
+  background-color: #5d7d32;
+}
+.navbar-item {
+  color: white;
+  font-weight: bolder;
+  font-size: 1.3em;
+}
+</style>
