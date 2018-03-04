@@ -1,25 +1,73 @@
-<template>
-  <section>
+
+  <!-- <section>
     <form @submit.prevent="signup">
-        <b-field label="Name">
-            <b-input v-model="name"></b-input>
-        </b-field>
+        <div label="Name">
+            <input v-model="name">
+        </div>
 
-        <b-field label="Username" :type="usernameError && 'is-danger'" :message="usernameError">
-            <b-input maxlength="30" v-model="username" required icon="account"></b-input>
-        </b-field>
+        <div label="Username" :type="usernameError && 'is-danger'" :message="usernameError">
+            <input maxlength="30" v-model="username" required icon="account">
+        </div>
 
-        <b-field label="Password">
-            <b-input type="password"
+        <div label="Password">
+            <input type="password"
               required
               v-model="password" 
               icon="lock"
                 password-reveal>
-            </b-input>
-        </b-field>
+           
+        </div>
         <button class="button is-primary">Signup</button>
     </form>
-  </section>
+  </section> -->
+
+<template>
+  <div  align="center">
+    <h2>Sign Up</h2>
+    <br>
+    <b-card style="width:500px">
+          <p type="is-danger" has-icon v-if="error">
+      {{ error.error }}
+    </p>
+    <b-form @submit.prevent="signup" >
+      <b-form-group id="exampleInputGroup1"
+                    label="Name"
+                    maxlength="30"
+                    label-for="exampleInput1"
+                 
+                   >
+        <b-form-input id="exampleInput1"
+                      type="text"
+                      v-model="name"
+                      required
+                      maxlength="30"
+                      placeholder="Enter your name">
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="exampleInputGroup2"
+                    label="Username" :type="usernameError && 'is-danger'" :message="usernameError"
+                    label-for="exampleInput2">
+        <b-form-input id="exampleInput2"
+                      type="text"
+                      required
+                      v-model="username" 
+                      placeholder="Enter your username">
+        </b-form-input>
+      </b-form-group>
+      <b-form-group id="exampleInputGroup3"
+                    label="Password"
+                    label-for="exampleInput3">
+        <b-form-input id="exampleInput3"
+                      type="text"
+                      v-model="password"
+                      required
+                      placeholder="Enter your password">
+        </b-form-input>
+      </b-form-group>
+      <b-button type="submit" variant="primary">Sign up</b-button>
+    </b-form>
+    </b-card>
+  </div>
 </template>
 
 <script>

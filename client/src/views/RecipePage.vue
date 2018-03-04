@@ -2,7 +2,7 @@
   <div class="content section">
     <h1 v-if="dish">How to cook {{dish.name}}?</h1>
 
-    <div v-if="recipe">
+    <div v-if="recipe " >
 <h2>Rating</h2>{{recipe.average}}
 <h2>Ingredients</h2>
 <ul>
@@ -62,12 +62,12 @@ export default {
   created() {
     api.getDish(this.$route.params.id).then(dish => {
       this.dish = dish;
-    }),
-      api.getRecipe(this.$route.params.id).then(recipe => {
+      return api.getRecipe(this.$route.params.id).then(recipe => {
         this.recipe = recipe;
+        return api.getReviews(this.$route.params.id).then(reviews => {
+          this.reviews = reviews;
+        });
       });
-    api.getReviews(this.$route.params.id).then(reviews => {
-      this.reviews = reviews;
     });
   },
   components: {

@@ -2,26 +2,26 @@
   <div>
     <section>
     <form @submit.prevent="saveResto">
-        <b-field label="Restaurant name">
-          <b-input v-model="name"></b-input>
-        </b-field>
+        <div label="Restaurant name">
+          <input v-model="name">
+        </div>
             
-      <b-field label="Address" >
+      <div label="Address" >
       <gmap-autocomplete
       placeholder="enter your address"
         @place_changed="setPlace" required>
       </gmap-autocomplete>
-      </b-field> 
-         <b-field label="Photo" >
-        <b-input type="file" class="form-control-file"  name="photo" v-model="photo">   </b-input>  
-      </b-field>
-        <b-field label="Url" >
-          <b-input maxlength="30" v-model="url" required ></b-input>
-        </b-field>
+      </div> 
+         <div label="Photo" >
+        <input type="file" class="form-control-file"  name="photo"  :v-model="photo">   
+      </div>
+        <div label="Url" >
+          <input maxlength="30" v-model="url"  >
+        </div>
    
-     <b-field label="Dish" >
-          <b-input  v-model="dish" required ></b-input>
-        </b-field>
+     <div label="Dish" >
+          <input  v-model="dish"  >
+        </div>
 
       <button class="button is-primary" >Save Restaurant</button>
     </form>
