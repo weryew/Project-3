@@ -10,7 +10,7 @@
 				<li class="clearfix" v-for="(rating,index) in ratings" :key='index'>
 				  <img src="https://bootdey.com/img/Content/user_1.jpg" class="avatar" alt="">
 				  <div class="post-comments">
-				      <p class="meta"><span>{{ `${rating.date}`| moment(" MMMM Do YYYY") }} </span><a href="#">{{rating.name}}</a> says : <i class="pull-right"><a href="#"><small>Reply</small></a></i></p>
+				      <p class="meta"><span>{{ rating.date | moment(" MMMM Do YYYY") }} </span><a href="#">{{rating.name}}</a> says : <i class="pull-right"><a href="#"><small>Reply</small></a></i></p>
 				    
               <p>
 				         {{rating.comment}}

@@ -81,9 +81,9 @@ export default {
       .catch(errHandler);
   },
   //add review to a recipe
-  addReview(id, rating, comment) {
+  addReview(id, review) {
     return service
-      .post(`dishes/${id}/recipeReview`, { rating, comment })
+      .post(`dishes/${id}/recipeReview`, review)
       .then(res => res.data)
       .catch(errHandler);
   },

@@ -96,14 +96,22 @@ export default {
       recipe: null,
       rating: null,
       comment: null,
-      reviews: null
+      reviews: null,
+      review: null
     };
   },
   methods: {
     saveReview() {
+      this.review = {
+        value: this.rating,
+        comment: this.comment,
+        date: new Date(),
+        name: this.$root.user.name,
+        photo: this.$root.user.photo
+      };
       api
-        .addReview(this.$route.params.id, this.rating, this.comment)
-        .then(console.log("done"));
+        .addReview(this.$route.params.id, this.review)
+        .then(console.log(this.review));
     }
   },
   created() {

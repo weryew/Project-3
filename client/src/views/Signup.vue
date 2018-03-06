@@ -45,6 +45,10 @@
                       placeholder="Enter your name">
         </b-form-input>
       </b-form-group>
+         <b-form-group label="Photo">                
+    <input type="file" class="form-control-file"  name="photo"  :v-model="photo">  
+  
+      </b-form-group>
       <b-form-group id="exampleInputGroup2"
                     label="Username" :type="usernameError && 'is-danger'" :message="usernameError"
                     label-for="exampleInput2">
@@ -79,6 +83,7 @@ export default {
   data() {
     return {
       name: "",
+      photo: "",
       username: "",
       password: "",
 
@@ -92,7 +97,8 @@ export default {
         .signup({
           name: this.name,
           username: this.username,
-          password: this.password
+          password: this.password,
+          photo: this.photo
         })
         .then(() => {
           this.$router.push("/login");
