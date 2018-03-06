@@ -15,7 +15,8 @@ const ratingSchema = new Schema({
     max: 5
   },
   date: Date,
-  name: String
+  name: String,
+  photo: String
 });
 
 const recipeSchema = new Schema({

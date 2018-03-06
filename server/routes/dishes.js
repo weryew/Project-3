@@ -6,7 +6,6 @@ const Recipe = require("../models/recipe");
 const Restaurant = require("../models/restaurant");
 const config = require("../config");
 var mongoose = require("mongoose");
-
 //get all the dishes with the name:dishname
 router.get("/:query", (req, res, next) => {
   const query = req.params.query.toUpperCase();
@@ -80,22 +79,27 @@ router.post(
     Recipe.findOne({ _dish: req.params.dishId }, (err, recipe) => {
       if (err) return next(err);
       recipe.ratings = recipe.ratings || [];
-      console.log(req.user._id);
       const rating = recipe.ratings.find(rating =>
         rating._user.equals(req.user._id)
       );
-      console.log(rating);
+
       const comment = recipe.ratings.find(r => r._user.equals(req.user._id));
       if (rating && comment) {
-        rating.value = req.body.rating;
+        rating.value = req.body.value;
         rating.comment = req.body.comment;
+        rating.date = new Date();
+        console.log("hi", rating);
       } else {
         recipe.ratings.push({
           _user: req.user._id,
-          value: req.body.rating,
-          comment: req.body.comment
+          value: req.body.value,
+          comment: req.body.comment,
+          date: new Date(),
+          name: req.user.name,
+          photo: req.user.photo
         });
       }
+      console.log("rating", req.body.value);
       let s = 0;
       recipe.ratings.forEach(r => {
         s = s + parseInt(r.value);

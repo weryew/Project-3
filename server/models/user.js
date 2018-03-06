@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema({
   name: String,
+  photo: String,
   role: {
     type: String,
     enum: ["user", "admin"]
