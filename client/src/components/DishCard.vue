@@ -1,12 +1,13 @@
 <template>
   <div >
-    <router-link :to="`/${id}`">
-    <h1>{{name}}</h1>
+     <b-card style="width:300px">
+    <router-link :to="`/${id}`"  align= "center" >
+    <h1 class="router" >{{name}}</h1>
     </router-link>
 
- <figure class="image is-128x128">
+
     <img :src="photo">
-  </figure>
+     </b-card>
   </div>
 </template>
 

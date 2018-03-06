@@ -35,15 +35,13 @@
 </div>
 
 <!-- dishes list -->
-<div>
-<ul>
-  <li v-for="(dish,index) in results" :key="index">
-    <div>
+<div  class="row">
+    <div v-for="(dish,index) in results" :key="index"  class="col-md-4">
   <dish-card :name="dish.name" :photo="dish.photo" :id="dish._id">
   </dish-card>
 </div>
-  </li>
-</ul> 
+
+
 </div>
   </div>
 </template>

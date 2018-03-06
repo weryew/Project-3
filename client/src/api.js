@@ -5,8 +5,8 @@ const service = axios.create({
 });
 
 const errHandler = err => {
-  console.error(err.response.data);
-  throw err.response.data;
+  console.error(err);
+  throw err.response ? err.response.data : err;
 };
 
 export default {
@@ -88,12 +88,12 @@ export default {
       .catch(errHandler);
   },
   //add review to a resto
-  // addReviewResto(id, rating, comment) {
-  //   return service
-  //     .post(`dishes/${id}/restoReview`, { rating, comment })
-  //     .then(res => res.data)
-  //     .catch(errHandler);
-  // },
+  addReviewResto(id, rating, comment) {
+    return service
+      .post(`dishes/${id}/restoReview`, { rating, comment })
+      .then(res => res.data)
+      .catch(errHandler);
+  },
   //get all the reviews of a recipe
   getReviews(id) {
     return service
@@ -112,6 +112,13 @@ export default {
   addDish(dish) {
     return service
       .post("/dishes/newDish", dish)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+  addDishToResto(id, dishId) {
+    console.log(id, dishId);
+    return service
+      .post(`/dishes/oneRest/${id}`, { dishId })
       .then(res => res.data)
       .catch(errHandler);
   }

@@ -3,18 +3,14 @@
     <div v-if="restos">  
       <google-map :restos="restos" ></google-map>
         <div class="section">
-        <ul>
-          <li v-for="(resto,index) in restos" :key="index">
+      <div class="row">
+          <div v-for="(resto,index) in restos" :key="index" class="col-md-4">
             <resto-card :resto="resto"></resto-card>
-          </li>
-        </ul>
+          </div>
+  </div>
         </div>
     </div>
     <div >
-     
-        <router-link :to="`/newResto`">
-        Add Restaurant
-        </router-link>
   
     </div>
   </div>

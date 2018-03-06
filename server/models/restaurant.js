@@ -1,12 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const arrayUniquePlugin = require("mongoose-unique-array");
-
-const reviewSchema = new Schema({
+const ratingSchema = new Schema({
   _user: {
     type: Schema.Types.ObjectId,
-    ref: "User",
-    unique: true
+    ref: "User"
+    // unique: true
   },
   comment: String,
   value: {
@@ -27,8 +26,8 @@ const restaurantSchema = new Schema({
       ref: "Dish"
     }
   ],
-  ratings: [reviewSchema],
+  ratings: [ratingSchema],
   average: Number
 });
-
+restaurantSchema.plugin(arrayUniquePlugin);
 module.exports = mongoose.model("Restaurant", restaurantSchema);

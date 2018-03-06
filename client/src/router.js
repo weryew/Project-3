@@ -9,7 +9,7 @@ import RecipePage from "./views/RecipePage.vue";
 import RestoList from "./views/RestoList.vue";
 import RestoPage from "./views/RestoPage.vue";
 import NewResto from "./views/NewResto.vue";
-
+import NewDish from "./views/NewDish.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -50,6 +50,10 @@ export default new Router({
     {
       path: "/resto/:id",
       component: RestoPage
+    },
+    {
+      path: "/resto/:id/addDish",
+      component: NewDish
     }
   ]
 });

@@ -3,8 +3,9 @@
   <div class="container" >
     
     <h2 v-if="dish" class="courgette vert" align="center">How to cook {{dish.name}}?</h2>
-
+<!-- star rating -->
     <div v-if="recipe " >
+<div class="star-ratings-sprite"><span :style="`width:${recipe.average}%`" class="star-ratings-sprite-rating"></span></div>
       <div align="center">
         <div class="section container">
         <article class="col col-3">
@@ -29,7 +30,6 @@
 {{ingredient}}
   </li>
 </ul>
-</div>
 <div class="section">
 <h4 class="courgette vert">Tools</h4>
 <ul>
@@ -48,12 +48,19 @@
 </ul>
 </div>
 </div>
-<hr>
+</div>
+<hr/>
+
+<!-- List of reviews -->
+<div class="section">
+<h4 class="courgette vert"> Reviews </h4>
 <br>
-<br>
+<div  v-if="reviews">
+  <Comment-card :ratings="recipe.ratings"></comment-card>
+</div> 
 <!-- Add a review -->
-<div>
-  <h5 class="courgette ">How much did you like this recipe?</h5>
+<div class="section">
+  <h5 class="courgette vert ">How much did you like this recipe?</h5>
   <br>
     <star-rating v-model="rating"  ></star-rating>
     <br>
@@ -68,14 +75,11 @@
         </button>
     </div>
 </div>
-<!-- List of reviews -->
-<div  v-if="reviews">
-<div v-for="(review,i) in reviews" :key="i">
-<review-card :comment="review.comment" :rating="review.value" ></review-card>
 </div>
-</div> 
+
 </div>
 </div>
+
 </section>
 </div>
 </template>
@@ -83,7 +87,8 @@
 <script>
 import api from "../api";
 import StarRating from "vue-star-rating";
-import ReviewCard from "../components/ReviewCard";
+import CommentCard from "../components/CommentCard";
+
 export default {
   data() {
     return {
@@ -96,23 +101,25 @@ export default {
   },
   methods: {
     saveReview() {
-      api.addReview(this.$route.params.id, this.rating, this.comment).then();
+      api
+        .addReview(this.$route.params.id, this.rating, this.comment)
+        .then(console.log("done"));
     }
   },
   created() {
     api.getDish(this.$route.params.id).then(dish => {
       this.dish = dish;
-      return api.getRecipe(this.$route.params.id).then(recipe => {
-        this.recipe = recipe;
-        return api.getReviews(this.$route.params.id).then(reviews => {
-          this.reviews = reviews;
-        });
-      });
+    });
+    api.getRecipe(this.$route.params.id).then(recipe => {
+      this.recipe = recipe;
+    });
+    api.getReviews(this.$route.params.id).then(reviews => {
+      this.reviews = reviews;
     });
   },
   components: {
     StarRating,
-    ReviewCard
+    CommentCard
   }
 };
 </script>

@@ -7,9 +7,14 @@
       <div  v-if="resto">
         <div align="center">
     <h2  class="courgette vert" >{{resto.name}}</h2>
+    <!-- star rating -->
+<div class="star-ratings-sprite"><span :style="`width:${resto.average}%`" class="star-ratings-sprite-rating"></span></div>
+<div class="section">
 <p>{{resto.url}}</p>
+
+<br>
 <img :src="resto.photo">
-      
+  </div>    
 
 <hr>
 <br>
@@ -33,11 +38,11 @@
     </div>
 </div>
 <!-- List of reviews -->
-<div  v-if="resto.reviews">
+<!-- <div  v-if="resto.reviews">
 <div v-for="(review,i) in resto.reviews" :key="i">
 <review-card :comment="review.comment" :rating="review.value" ></review-card>
 </div>
-</div>
+</div> -->
 </div> 
 
 </div>
@@ -48,13 +53,13 @@
 <script>
 import api from "../api";
 import StarRating from "vue-star-rating";
-import ReviewCard from "../components/ReviewCard";
+
 export default {
   methods: {
     saveReview() {
       api
         .addReviewResto(this.$route.params.id, this.rating, this.comment)
-        .then();
+        .then(console.log("reviews done"));
     }
   },
   data() {
@@ -71,8 +76,7 @@ export default {
     });
   },
   components: {
-    StarRating,
-    ReviewCard
+    StarRating
   }
 };
 </script>

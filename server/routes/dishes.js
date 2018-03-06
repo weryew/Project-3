@@ -5,6 +5,7 @@ const Dish = require("../models/dish");
 const Recipe = require("../models/recipe");
 const Restaurant = require("../models/restaurant");
 const config = require("../config");
+var mongoose = require("mongoose");
 
 //get all the dishes with the name:dishname
 router.get("/:query", (req, res, next) => {
@@ -13,9 +14,12 @@ router.get("/:query", (req, res, next) => {
     if (err) {
       next(err);
     }
+    console.log(results);
+
     const dishes = results.filter(dish => {
       return dish.name.toUpperCase().indexOf(query) !== -1;
     });
+    console.log("after");
 
     res.json(dishes);
   });
@@ -68,7 +72,7 @@ router.get("/oneRest/:restId", (req, res, next) => {
   });
 });
 
-//add a reviewto a recipe
+//add a review to a recipe
 router.post(
   "/:dishId/recipeReview",
   passport.authenticate("jwt", config.jwtSession),
@@ -76,7 +80,11 @@ router.post(
     Recipe.findOne({ _dish: req.params.dishId }, (err, recipe) => {
       if (err) return next(err);
       recipe.ratings = recipe.ratings || [];
-      const rating = recipe.ratings.find(r => r._user.equals(req.user._id));
+      console.log(req.user._id);
+      const rating = recipe.ratings.find(rating =>
+        rating._user.equals(req.user._id)
+      );
+      console.log(rating);
       const comment = recipe.ratings.find(r => r._user.equals(req.user._id));
       if (rating && comment) {
         rating.value = req.body.rating;
@@ -92,7 +100,7 @@ router.post(
       recipe.ratings.forEach(r => {
         s = s + parseInt(r.value);
       });
-      recipe.average = s / recipe.ratings.length;
+      recipe.average = s / recipe.ratings.length * 20;
 
       recipe.save(err => {
         if (err) return next(err);
@@ -103,49 +111,53 @@ router.post(
 );
 
 //get all the reviews
-router.get("/:dishId/reviews", (req, res, next) => {
-  Recipe.findOne({ _dish: req.params.dishId }, (err, recipe) => {
-    if (err) return next(err);
+router.get(
+  "/:dishId/reviews",
+  // passport.authenticate("jwt", config.jwtSession),
+  (req, res, next) => {
+    Recipe.findOne({ _dish: req.params.dishId }, (err, recipe) => {
+      if (err) return next(err);
 
-    res.json(recipe.ratings);
-  });
-});
+      res.json(recipe.ratings);
+    });
+  }
+);
 
 //add a review to a resto
-// router.post(
-//   "/:dishId/restoReview",
-//   passport.authenticate("jwt", config.jwtSession),
-//   (req, res, next) => {
-//     Restaurant.findOne({ dishes: req.params.dishId }, (err, restaurant) => {
-//       if (err) return next(err);
-//       restaurant.ratings = restaurant.ratings || [];
-//       const rating = restaurant.ratings.find(r => r._user.equals(req.user._id));
-//       const comment = restaurant.ratings.find(r =>
-//         r._user.equals(req.user._id)
-//       );
-//       if (rating && comment) {
-//         rating.value = req.body.rating;
-//         rating.comment = req.body.comment;
-//       } else {
-//         restaurant.ratings.push({
-//           _user: req.user._id,
-//           value: req.body.rating,
-//           comment: req.body.comment
-//         });
-//       }
-//       let s = 0;
-//       restaurant.ratings.forEach(r => {
-//         s = s + parseInt(r.value);
-//       });
-//       restaurant.average = s / restaurant.ratings.length;
-
-//       restaurant.save(err => {
-//         if (err) return next(err);
-//         res.json(restaurant);
-//       });
-//     });
-//   }
-// );
+router.post(
+  "/:restoId/restoReview",
+  passport.authenticate("jwt", config.jwtSession),
+  (req, res, next) => {
+    Restaurant.findById(req.params.restoId, (err, restaurant) => {
+      console.log(restaurant);
+      if (err) return next(err);
+      restaurant.ratings = restaurant.ratings || [];
+      const rating = restaurant.ratings.find(r => r._user.equals(req.user._id));
+      const comment = restaurant.ratings.find(r =>
+        r._user.equals(req.user._id)
+      );
+      if (rating && comment) {
+        rating.value = req.body.rating;
+        rating.comment = req.body.comment;
+      } else {
+        restaurant.ratings.push({
+          _user: req.user._id,
+          value: req.body.rating,
+          comment: req.body.comment
+        });
+      }
+      let s = 0;
+      restaurant.ratings.forEach(r => {
+        s = s + parseInt(r.value);
+      });
+      restaurant.average = s / restaurant.ratings.length * 20;
+      restaurant.save(err => {
+        if (err) return next(err);
+        res.json(restaurant);
+      });
+    });
+  }
+);
 
 //add a dish
 router.post("/newDish", (req, res, next) => {
@@ -160,4 +172,21 @@ router.post("/newDish", (req, res, next) => {
     res.json(dish);
   });
 });
+
+//add dishes to a new resto
+router.post("/oneRest/:restId", (req, res, next) => {
+  const dishId = req.body.dishId;
+  Restaurant.findByIdAndUpdate(
+    req.params.restId,
+    { $push: { dishes: dishId } },
+    (err, restaurant) => {
+      console.log(restaurant);
+      // restaurant.save(err => {
+      if (err) return next(err);
+      res.json(restaurant);
+      // });
+    }
+  );
+});
+
 module.exports = router;

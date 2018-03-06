@@ -1,32 +1,44 @@
 <template>
-  <div>
-    <section>
-    <form @submit.prevent="saveResto">
-        <div label="Restaurant name">
-          <input v-model="name">
-        </div>
-            
-      <div label="Address" >
-      <gmap-autocomplete
-      placeholder="enter your address"
-        @place_changed="setPlace" required>
-      </gmap-autocomplete>
-      </div> 
-         <div label="Photo" >
-        <input type="file" class="form-control-file"  name="photo"  :v-model="photo">   
-      </div>
-        <div label="Url" >
-          <input maxlength="30" v-model="url"  >
-        </div>
-   
-     <div label="Dish" >
-          <input  v-model="dish"  >
-        </div>
+<section class="section container">
+  <div  align="center" >
+    <h2>Add a new Restaurant</h2>
+    <br>
+    
+    <b-card style="width:500px">
 
-      <button class="button is-primary" >Save Restaurant</button>
-    </form>
-    </section>
+    <b-form  >
+
+      <b-form-group label="Restaurant name">
+        <b-form-input type="text" v-model="name" required placeholder="Enter your restaurant name">
+        </b-form-input>
+      </b-form-group>                  
+                      
+    
+
+      <b-form-group label="Address">    
+ 
+      <gmap-autocomplete placeholder="enter your address" @place_changed="setPlace" required>
+      </gmap-autocomplete>
+   
+      </b-form-group>
+
+      <b-form-group label="Photo">                
+    <input type="file" class="form-control-file"  name="photo"  :v-model="photo">  
+  
+      </b-form-group>
+  
+    <b-form-group label="URL">                
+   <b-form-input maxlength="30" v-model="url" placeholder="Enter your restaurant" >
+    </b-form-input>
+      </b-form-group>
+
+  
+
+      <b-button id="btn" @click="saveResto">Save Restaurant</b-button>
+    </b-form>
+    </b-card>
   </div>
+  </section> 
 </template>
 
 <script>
@@ -36,8 +48,6 @@ import VueGoogleAutocomplete from "vue-google-autocomplete";
 export default {
   data() {
     return {
-      dishes: [],
-      dish: "",
       name: "",
       url: "",
       photo: "",
@@ -58,41 +68,17 @@ export default {
   methods: {
     saveResto() {
       api
-        .search(this.dish)
-        .then(results => {
-          if (results.length === 0) {
-            console.log("empty");
-            api.addDish(this.dish).then();
-            return api.addResto({
-              name: this.name,
-              url: this.url,
-              photo: this.photo,
-              address: {
-                lat: this.lat,
-                lng: this.lng
-              },
-              dishes: this.dishes
-            });
-          } else {
-            results.forEach(dish => {
-              console.log(dish._id);
-              this.dishes.push(dish._id);
-            });
-
-            return api.addResto({
-              name: this.name,
-              url: this.url,
-              photo: this.photo,
-              address: {
-                lat: this.lat,
-                lng: this.lng
-              },
-              dishes: this.dishes
-            });
+        .addResto({
+          name: this.name,
+          url: this.url,
+          photo: this.photo,
+          address: {
+            lat: this.lat,
+            lng: this.lng
           }
         })
         .then(resto => {
-          this.$router.push(`/resto/${resto._id}`);
+          this.$router.push(`/resto/${resto._id}/addDish`);
         });
     },
     setPlace(place) {

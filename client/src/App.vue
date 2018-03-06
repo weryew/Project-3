@@ -33,6 +33,7 @@ export default {
 <style>
 @import url("https://fonts.googleapis.com/css?family=Courgette");
 @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700");
 
 .courgette {
   font-family: "Courgette", sans-serif;
@@ -48,6 +49,31 @@ body {
 }
 .vert {
   color: #5d7d32;
+}
+.router {
+  font-family: "Courgette", sans-serif;
+  font-size: 1.2em;
+  color: #5d7d32;
+}
+.star-ratings-sprite {
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png")
+    repeat-x;
+  font-size: 0;
+  height: 21px;
+  line-height: 0;
+  overflow: hidden;
+  text-indent: -999em;
+  width: 110px;
+  margin: 0 auto;
+}
+
+.star-ratings-sprite-rating {
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/2605/star-rating-sprite.png")
+    repeat-x;
+  background-position: 0 100%;
+  float: left;
+  height: 21px;
+  display: block;
 }
 </style>
 
