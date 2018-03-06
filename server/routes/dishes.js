@@ -13,12 +13,9 @@ router.get("/:query", (req, res, next) => {
     if (err) {
       next(err);
     }
-    console.log(results);
-
     const dishes = results.filter(dish => {
       return dish.name.toUpperCase().indexOf(query) !== -1;
     });
-    console.log("after");
 
     res.json(dishes);
   });

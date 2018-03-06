@@ -19,9 +19,9 @@
 <hr>
 <br>
 <br>
-<!-- Add a review -->
 </div>
-<div>
+<!-- Add a review -->
+<!-- <div>
   <h5 class="courgette ">How much did you like this restaurant?</h5>
   <br>
     <star-rating v-model="rating"  ></star-rating>
@@ -36,13 +36,24 @@
         <span style="color:white" class="courgette">save review</span>
         </button>
     </div>
-</div>
+</div> -->
 <!-- List of reviews -->
 <!-- <div  v-if="resto.reviews">
 <div v-for="(review,i) in resto.reviews" :key="i">
 <review-card :comment="review.comment" :rating="review.value" ></review-card>
 </div>
 </div> -->
+
+<!-- meetups -->
+
+<div>
+  <h5 class="courgette vert">Meetups in {{resto.name}} restaurant </h5>
+  <div v-for="(meetup,i) in resto.meetups" :key="i">
+    <div id="movie-card-list" >
+  <meet-up :meetup="meetup"> </meet-up>
+  </div>
+</div>
+</div>
 </div> 
 
 </div>
@@ -53,7 +64,7 @@
 <script>
 import api from "../api";
 import StarRating from "vue-star-rating";
-
+import MeetUp from "../components/MeetUp";
 export default {
   methods: {
     saveReview() {
@@ -76,7 +87,8 @@ export default {
     });
   },
   components: {
-    StarRating
+    StarRating,
+    MeetUp
   }
 };
 </script>

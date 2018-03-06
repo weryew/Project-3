@@ -15,9 +15,22 @@ const ratingSchema = new Schema({
   }
 });
 
+const meetupSchema = new Schema({
+  title: String,
+  address: String,
+  date: Date,
+  created: String,
+  person: Number,
+  dish: {
+    name: String,
+    photo: String
+  }
+});
+
 const restaurantSchema = new Schema({
   name: String,
   address: Object,
+  fullAddress: String,
   photo: String,
   url: String,
   dishes: [
@@ -27,6 +40,7 @@ const restaurantSchema = new Schema({
     }
   ],
   ratings: [ratingSchema],
+  meetups: [meetupSchema],
   average: Number
 });
 restaurantSchema.plugin(arrayUniquePlugin);

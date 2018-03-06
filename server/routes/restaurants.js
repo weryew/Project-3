@@ -28,4 +28,41 @@ router.post("/restaurants", (req, res, next) => {
   });
 });
 
+//get all meetups
+router.get("/meetups", (req, res, next) => {
+  Restaurant.find({}, (results, err) => {
+    if (err) return next(err);
+    const meetups = [];
+    results.forEach(restaurant => {
+      return meetups.push(restaurant.meetups);
+    });
+    res.json(meetups);
+  });
+});
+
+// router.get("dishes/oneRest/:restId/getMeetups", (req, res, next) => {
+//   Restaurant.findById(req.params.restId, (err, restaurant) => {
+//     if (err) {
+//       next(err);
+//     }
+//     res.json(restaurant.meetups);
+//   });
+// });
+
+router.post("dishes/oneRest/:restId/addMeetup", (req, res, newt) => {
+  const { title, date, created, person, dish } = req.body;
+  const meetup = { title, date, created, person, dish };
+  Restaurant.findByIdAndUpdate(
+    req.params.restId,
+    { $push: { meetups: meetup } },
+    (err, restaurant) => {
+      if (err) return next(err);
+      restaurant.save(err => {
+        if (err) return next(err);
+        res.json(meetup);
+      });
+    }
+  );
+});
+
 module.exports = router;
