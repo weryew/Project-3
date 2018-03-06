@@ -58,6 +58,7 @@ app.use("/", require("./routes/index"));
 app.use("/api", require("./routes/auth"));
 app.use("/api/dishes", require("./routes/dishes"));
 app.use("/api", require("./routes/restaurants"));
+app.use("/api", require("./routes/meetups"));
 app.get(
   "/api/secret",
   // this is protecting the route and giving us access to

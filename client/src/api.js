@@ -115,10 +115,17 @@ export default {
       .then(res => res.data)
       .catch(errHandler);
   },
+  //add dish to resto
   addDishToResto(id, dishId) {
-    console.log(id, dishId);
     return service
       .post(`/dishes/oneRest/${id}`, { dishId })
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+  // get all th meetups
+  getMeetups() {
+    return service
+      .get("/meetups")
       .then(res => res.data)
       .catch(errHandler);
   }

@@ -19,11 +19,17 @@
           <router-link class="navbar-item " to="/">
   Home
     </router-link>
+          <router-link
+        class="navbar-item" to="/meetups"
+        
+      >
+        Meetups
+      </router-link>
       <router-link
         class="navbar-item" to="/about"
-        @click.native="isActive = false"
+      
       >
-        About
+        About Us
       </router-link>
     </div>
 
