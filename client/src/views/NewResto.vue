@@ -57,7 +57,8 @@ export default {
       address: {
         lat: 0,
         lng: 0
-      }
+      },
+      fullAddress: ""
     };
   },
   // mounted() {
@@ -75,7 +76,8 @@ export default {
           address: {
             lat: this.lat,
             lng: this.lng
-          }
+          },
+          fullAddress: this.fullAddress
         })
         .then(resto => {
           this.$router.push(`/resto/${resto._id}/addDish`);
@@ -85,6 +87,7 @@ export default {
       this.place = place;
       this.lat = place.geometry.viewport.b.b;
       this.lng = place.geometry.viewport.f.b;
+      this.fullAddress = place.formatted_address;
     }
   },
   components: { VueGoogleAutocomplete }

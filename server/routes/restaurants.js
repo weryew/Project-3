@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Restaurant = require("../models/restaurant");
-
+const Meetup = require("../models/meetup");
+var mongoose = require("mongoose");
 // function checkRole(role) {
 //   return (req, res, next) => {
 //     if (req.user.role !== role) {
@@ -12,12 +13,13 @@ const Restaurant = require("../models/restaurant");
 // }
 
 router.post("/restaurants", (req, res, next) => {
-  const { name, url, address, photo } = req.body;
+  const { name, url, address, photo, fullAddress } = req.body;
   const restaurant = new Restaurant({
     name,
     url,
     address,
-    photo
+    photo,
+    fullAddress
   });
   Restaurant.create(restaurant, err => {
     if (err) {
@@ -29,40 +31,45 @@ router.post("/restaurants", (req, res, next) => {
 });
 
 //get all meetups
-router.get("/meetups", (req, res, next) => {
-  Restaurant.find({}, (results, err) => {
+router.get("/restaurants/meetups", (req, res, next) => {
+  Meetup.find({}, (err, results) => {
     if (err) return next(err);
-    const meetups = [];
-    results.forEach(restaurant => {
-      return meetups.push(restaurant.meetups);
-    });
-    res.json(meetups);
+    console.log(results);
+    res.json(results);
   });
 });
 
-// router.get("dishes/oneRest/:restId/getMeetups", (req, res, next) => {
-//   Restaurant.findById(req.params.restId, (err, restaurant) => {
-//     if (err) {
-//       next(err);
-//     }
-//     res.json(restaurant.meetups);
-//   });
-// });
-
-router.post("dishes/oneRest/:restId/addMeetup", (req, res, newt) => {
-  const { title, date, created, person, dish } = req.body;
-  const meetup = { title, date, created, person, dish };
+router.post("/oneRest/:restId/addMeetup", (req, res, next) => {
+  const { title, date, created, person, address, creator, photo } = req.body;
+  const meetup = new Meetup({
+    title,
+    date,
+    created,
+    person,
+    address,
+    creator,
+    photo
+  });
+  Meetup.create(meetup, err => {
+    if (err) return next(err);
+    res.json(meetup);
+  });
   Restaurant.findByIdAndUpdate(
     req.params.restId,
     { $push: { meetups: meetup } },
     (err, restaurant) => {
       if (err) return next(err);
-      restaurant.save(err => {
-        if (err) return next(err);
-        res.json(meetup);
-      });
     }
   );
+});
+
+router.post(`/oneRest/addPerson`, (req, res, next) => {
+  const meetupId = req.body.meetupId;
+  Meetup.findByIdAndUpdate(meetupId, { $inc: { person: 1 } }, (err, meetup) => {
+    if (err) return next(err);
+    res.json(meetup);
+    console.log(meetup);
+  });
 });
 
 module.exports = router;

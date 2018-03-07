@@ -11,6 +11,7 @@ import RestoList from "./views/RestoList.vue";
 import RestoPage from "./views/RestoPage.vue";
 import NewResto from "./views/NewResto.vue";
 import NewDish from "./views/NewDish.vue";
+import NewMeetup from "./views/NewMeetup.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -59,6 +60,10 @@ export default new Router({
     {
       path: "/resto/:id/addDish",
       component: NewDish
+    },
+    {
+      path: "/resto/:id/addMeetup",
+      component: NewMeetup
     }
   ]
 });

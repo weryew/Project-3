@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const arrayUniquePlugin = require("mongoose-unique-array");
+
 const ratingSchema = new Schema({
   _user: {
     type: Schema.Types.ObjectId,
@@ -15,17 +16,21 @@ const ratingSchema = new Schema({
   }
 });
 
-const meetupSchema = new Schema({
-  title: String,
-  address: String,
-  date: Date,
-  created: String,
-  person: Number,
-  dish: {
-    name: String,
-    photo: String
-  }
-});
+// const meetupSchema = new Schema({
+//   title: String,
+//   photo: String,
+//   address: String,
+//   date: Date,
+//   created: Date,
+//   person: Number,
+//   creator: {
+//     name: String,
+//     creatorId: {
+//       type: Schema.Types.ObjectId,
+//       ref: "User"
+//     }
+//   }
+// });
 
 const restaurantSchema = new Schema({
   name: String,
@@ -40,7 +45,7 @@ const restaurantSchema = new Schema({
     }
   ],
   ratings: [ratingSchema],
-  meetups: [meetupSchema],
+  meetups: [{}],
   average: Number
 });
 restaurantSchema.plugin(arrayUniquePlugin);

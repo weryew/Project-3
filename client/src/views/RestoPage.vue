@@ -6,11 +6,11 @@
    
       <div  v-if="resto">
         <div align="center">
-    <h2  class="courgette vert" >{{resto.name}}</h2>
+    <h2  >{{resto.name}}</h2>
     <!-- star rating -->
 <div class="star-ratings-sprite"><span :style="`width:${resto.average}%`" class="star-ratings-sprite-rating"></span></div>
 <div class="section">
-<p>{{resto.url}}</p>
+<!-- <p>{{resto.url}}</p> -->
 
 <br>
 <img :src="resto.photo">
@@ -22,7 +22,7 @@
 </div>
 <!-- Add a review -->
 <!-- <div>
-  <h5 class="courgette ">How much did you like this restaurant?</h5>
+  <h5 >How much did you like this restaurant?</h5>
   <br>
     <star-rating v-model="rating"  ></star-rating>
     <br>
@@ -33,7 +33,7 @@
 
     <div v-if="rating && comment">
       <button @click="saveReview" id="btn" >
-        <span style="color:white" class="courgette">save review</span>
+        <span style="color:white" >save review</span>
         </button>
     </div>
 </div> -->
@@ -47,11 +47,14 @@
 <!-- meetups -->
 
 <div>
-  <h5 class="courgette vert">Meetups in {{resto.name}} restaurant </h5>
+  <h5 >Meetups in {{resto.name}} restaurant </h5>
   <div v-for="(meetup,i) in resto.meetups" :key="i">
     <div id="movie-card-list" >
-  <meet-up :meetup="meetup"> </meet-up>
+  <meet-up :meetup="meetup" > </meet-up>
   </div>
+</div>
+<div align="center">
+<router-link :to="`/resto/${resto._id}/addMeetup`" class="button " id="btn">Create a Meetup</router-link> 
 </div>
 </div>
 </div> 
@@ -84,6 +87,8 @@ export default {
   created() {
     api.getResto(this.$route.params.id).then(resto => {
       this.resto = resto;
+
+      console.log(this.photo);
     });
   },
   components: {

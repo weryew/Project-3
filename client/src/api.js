@@ -125,7 +125,19 @@ export default {
   // get all th meetups
   getMeetups() {
     return service
-      .get("/meetups")
+      .get("/restaurants/meetups")
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+  addMeetup(id, meetup) {
+    return service
+      .post(`/oneRest/${id}/addMeetup`, meetup)
+      .then(res => res.data)
+      .catch(errHandler);
+  },
+  addPerson(meetupId) {
+    return service
+      .post(`/oneRest/addPerson`, { meetupId })
       .then(res => res.data)
       .catch(errHandler);
   }

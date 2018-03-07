@@ -1,38 +1,52 @@
 
 <template>
-
-
-  	<div class="movie-card" :style="{'background-image': url(meetup.dish.photo) }">
+  	<div class="movie-card" :style="{'background-image': `url(${meetup.photo})` }">
 		<div class="color-overlay">
-			<div class="movie-content">
+			<div class="movie-content section">
 				<div class="movie-header">
-					<h1 class="movie-title">{{meetup.title}}</h1>
+					<h3 class="movie-title">{{meetup.title}}</h3>
 				</div>
-				<p class="movie-desc">{{meetup.address}}</p>
-        <p class="movie-desc">{{meetup.date}}</p>
-          <p class="movie-desc">{{meetup.person}}</p>
-        <p class="movie-desc">{{meetup.created}}</p>
+        <p class="movie-info">created on <span>{{ meetup.created| moment(" MMMM Do YYYY") }} </span></p>
+        <br>
+				<p class="movie-desc">
+          <span class="	glyphicon glyphicon-map-marker"></span>
+          {{meetup.address}}</p>
+        <p class="movie-desc"><span class="	glyphicon glyphicon-time"></span>
+        <span>{{ meetup.date| moment(" MMMM Do YYYY") }} </span>
+          </p>
+          <p class="movie-desc"><span class="	glyphicon glyphicon-user"></span>
+          {{meetup.person}} person interested</p>
+        <div align="center">
+        	<button class="btn"  href="#" @click="addNew">Join Meetup</button>
+          </div>
 			</div>
 		</div>
 	</div>
 
-
+	
 </template>
 <script>
 import api from "../api";
 export default {
   props: {
     meetup: Object
+  },
+  methods: {
+    addNew() {
+      api.addPerson(this.meetup._id).then(res => {
+        console.log(this.meetup._id);
+      });
+    }
   }
 };
 </script>
 
 <style>
 /* body {
-  background-color: #dce1e5; 
+  background-color: #dce1e5;
   font-family: "Montserrat", helvetica, arial, sans-serif;
   font-size: 14px;
-   color: #cfd6e1; 
+  color: #cfd6e1;
   line-height: 1.5;
   font-weight: 400;
   max-width: 100%;
@@ -47,7 +61,9 @@ export default {
 /* a {
   text-decoration: none;
 } */
-
+.movie-desc {
+  color: white;
+}
 .movie-card {
   background-size: contain;
   background-position: -40% 80%;
@@ -91,11 +107,11 @@ h3 {
 } */
 
 .movie-content {
-  width: 40%;
+  width: 43%;
   display: block;
   position: relative;
   float: right;
-  padding-right: 1em;
+  padding-right: 0.5em;
 }
 .movie-content .movie-title {
   color: #ffffff;
@@ -112,58 +128,38 @@ h3 {
   font-weight: 700;
   opacity: 0.5;
 }
-.movie-content .movie-header {
+/* .movie-content .movie-header {
   margin-bottom: 2em;
-}
+} */
 .movie-content .movie-desc {
   font-weight: 300;
   opacity: 0.84;
-  margin-bottom: 2em;
+  /* margin-bottom: 2em; */
 }
 
 .btn {
-  padding: 0.8em 2em;
-  background-color: rgba(255, 255, 255, 0.2);
-  color: white;
+  background-color: white;
+  color: black;
 }
 
 .btn-outline {
   background-color: transparent;
-  border: 3px solid #ffffff;
+  border: 1px solid #ffffff;
 }
 
-.btn::before {
+/* .btn::before {
   font-family: "Material Icons";
   content: "\e037";
   vertical-align: middle;
   font-size: 1.5em;
   padding-right: 0.5em;
-}
+} */
 
 .btn-outline:hover {
   border-color: #2a9fff;
   color: #2a9fff;
   -webkit-box-shadow: 0px 1px 8px 0px rgba(245, 199, 0, 0.2);
   box-shadow: 0px 1px 8px 0px rgba(245, 199, 0, 0.2);
-}
-
-.movie-share {
-  padding: 1em;
-  display: inline-block;
-  width: 15%;
-}
-
-.movie-share__icon i {
-  font-size: 1.2em;
-  margin-left: 0.5em;
-  color: #ffffff;
-  mix-blend-mode: lighten;
-  opacity: 0.4;
-}
-
-.movie-share__icon i:hover {
-  opacity: 1;
-  mix-blend-mode: lighten;
 }
 
 @media (max-width: 1000px) {
@@ -198,7 +194,7 @@ h3 {
   }
 
   .movie-content {
-    margin-top: 4.2em;
+    /* margin-top: 4.2em; */
     width: 90%;
   }
 

@@ -3,11 +3,11 @@
   <div class="container" >
   <div align="center">
     <div v-if="dish">
-<h2 class="courgette vert"> {{dish.name}}</h2>
+<h2 > {{dish.name}}</h2>
 <div class="section">
     <img :src="dish.photo">  
 <div class="section">
-<h4 class="courgette vert">Description</h4>
+<h4 >Description</h4>
 <br>
   <p>{{dish.description}}</p>
   </div>

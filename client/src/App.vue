@@ -2,7 +2,7 @@
    <div id="app">
    <section class="section">
      <figure align="center" class="container">
-       <h1 class="courgette" style="color:#5d7d32">CoolAParis</h1>
+       <h1  style="color:#5d7d32">CoolAParis</h1>
         <!-- <img src="../public/logo.jpeg" alt="logo" >   -->
           </figure>
     <nav-bar/>
@@ -35,9 +35,15 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700");
 
-.courgette {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-family: "Courgette", sans-serif;
+  color: #5d7d32;
 }
+
 #btn {
   background-color: #5d7d32;
   border-color: #5d7d32;
@@ -47,9 +53,7 @@ body {
   color: #51575b;
   font-family: "Josefin Sans", sans-serif;
 }
-.vert {
-  color: #5d7d32;
-}
+
 .router {
   font-family: "Courgette", sans-serif;
   font-size: 1.2em;
