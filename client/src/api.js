@@ -147,5 +147,18 @@ export default {
       .get(`/oneRest/${id}/meetups`)
       .then(res => res.data)
       .catch(errHandler);
+  },
+
+  getCreated() {
+    return service
+      .get("/meetups")
+      .then(res => res.data.meetupsCreated)
+      .catch(errHandler);
+  },
+  getJoined() {
+    return service
+      .get("/meetups")
+      .then(res => res.data.meetupsJoined)
+      .catch(errHandler);
   }
 };

@@ -66,12 +66,7 @@ router.post(
       creator,
       photo
     });
-    console.log(req.user._id);
-    // User.findByIdAndUpdate(
-    //   req.body.user._id,
-    //   { $push: { meetupsCreated: meetup } },
-    //   (err, user) => {}
-    // );
+
     Restaurant.findByIdAndUpdate(
       req.params.restId,
       { $push: { meetups: meetup } },
@@ -95,13 +90,41 @@ router.post(
   }
 );
 
-router.post(`/oneRest/addPerson`, (req, res, next) => {
-  const meetupId = req.body.meetupId;
-  Meetup.findByIdAndUpdate(meetupId, { $inc: { person: 1 } }, (err, meetup) => {
-    if (err) return next(err);
-    res.json(meetup);
-    console.log(meetup);
-  });
-});
+router.post(
+  `/oneRest/addPerson`,
+  passport.authenticate("jwt", config.jwtSession),
+  (req, res, next) => {
+    const meetupId = req.body.meetupId;
+    Meetup.findByIdAndUpdate(
+      meetupId,
+      { $inc: { person: 1 } },
+      (err, meetup) => {
+        if (err) return next(err);
+        User.findByIdAndUpdate(
+          req.user._id,
+          { $push: { meetupsJoined: meetup } },
+          (err, user) => {
+            if (err) return next(err);
+            res.json(meetup);
+          }
+        );
+      }
+    );
+  }
+);
+//get all the meetups joined and created by the user
+router.get(
+  "/meetups",
+  passport.authenticate("jwt", config.jwtSession),
+  (req, res, err) => {
+    User.findById(req.user._id)
+      .populate("meetupsJoined")
+      .populate("meetupsCreated")
+      .exec((err, user) => {
+        if (err) return next(err);
+        res.json(user);
+      });
+  }
+);
 
 module.exports = router;
