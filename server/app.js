@@ -1,11 +1,12 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const favicon = require("serve-favicon");
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-
-mongoose.connect("mongodb://localhost/coolAParis");
+const history = require("express-history-api-fallback");
+mongoose.connect(process.env.MONGODB_URI);
 
 const passport = require("passport");
 const User = require("./models/user");
@@ -54,7 +55,6 @@ const strategy = new Strategy(
 // tell pasport to use it
 passport.use(strategy);
 
-app.use("/", require("./routes/index"));
 app.use("/api", require("./routes/auth"));
 app.use("/api/dishes", require("./routes/dishes"));
 app.use("/api", require("./routes/restaurants"));
@@ -69,7 +69,9 @@ app.get(
     res.json(req.user);
   }
 );
-
+const clientRoot = path.join(__dirname, "../client/dist");
+app.use("/", express.static(clientRoot));
+app.use(history("index.html", { root: clientRoot }));
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error("Not Found");
