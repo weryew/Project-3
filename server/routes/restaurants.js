@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const Restaurant = require("../models/restaurant");
 const Meetup = require("../models/meetup");
-var mongoose = require("mongoose");
+const User = require("../models/user");
+const passport = require("passport");
+const config = require("../config");
 // function checkRole(role) {
 //   return (req, res, next) => {
 //     if (req.user.role !== role) {
@@ -39,29 +41,59 @@ router.get("/restaurants/meetups", (req, res, next) => {
   });
 });
 
-router.post("/oneRest/:restId/addMeetup", (req, res, next) => {
-  const { title, date, created, person, address, creator, photo } = req.body;
-  const meetup = new Meetup({
-    title,
-    date,
-    created,
-    person,
-    address,
-    creator,
-    photo
-  });
-  Meetup.create(meetup, err => {
-    if (err) return next(err);
-    res.json(meetup);
-  });
-  Restaurant.findByIdAndUpdate(
-    req.params.restId,
-    { $push: { meetups: meetup } },
-    (err, restaurant) => {
+//get meetups for a resto
+router.get("/oneRest/:restId/meetups", (req, res, next) => {
+  Restaurant.findById(req.params.restId)
+    .populate("meetups")
+    .exec((err, resto) => {
       if (err) return next(err);
-    }
-  );
+
+      res.json(resto.meetups);
+    });
 });
+//add a meetup
+router.post(
+  "/oneRest/:restId/addMeetup",
+  passport.authenticate("jwt", config.jwtSession),
+  (req, res, next) => {
+    const { title, date, created, person, address, creator, photo } = req.body;
+    const meetup = new Meetup({
+      title,
+      date,
+      created,
+      person,
+      address,
+      creator,
+      photo
+    });
+    console.log(req.user._id);
+    // User.findByIdAndUpdate(
+    //   req.body.user._id,
+    //   { $push: { meetupsCreated: meetup } },
+    //   (err, user) => {}
+    // );
+    Restaurant.findByIdAndUpdate(
+      req.params.restId,
+      { $push: { meetups: meetup } },
+      (err, restaurant) => {
+        if (err) return next(err);
+
+        User.findByIdAndUpdate(
+          req.user._id,
+          { $push: { meetupsCreated: meetup } },
+          (err, user) => {
+            if (err) return next(err);
+
+            Meetup.create(meetup, err => {
+              if (err) return next(err);
+              res.json(meetup);
+            });
+          }
+        );
+      }
+    );
+  }
+);
 
 router.post(`/oneRest/addPerson`, (req, res, next) => {
   const meetupId = req.body.meetupId;

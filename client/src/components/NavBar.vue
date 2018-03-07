@@ -51,8 +51,11 @@
         </div>
        
      <div class="navbar-end " v-else> 
-        <router-link to="/newResto" v-if="$root.user.role===`admin`"  class="navbar-item" >
+ <router-link to="/userpage"  class="navbar-item" >
        <span class="glyphicon glyphicon-user"></span>
+        </router-link>
+        <router-link to="/newResto" v-if="$root.user.role===`admin`"  class="navbar-item" >
+   Admin
         </router-link>
 <a  class="navbar-item" @click="logout">
               Logout

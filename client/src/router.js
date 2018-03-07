@@ -12,6 +12,7 @@ import RestoPage from "./views/RestoPage.vue";
 import NewResto from "./views/NewResto.vue";
 import NewDish from "./views/NewDish.vue";
 import NewMeetup from "./views/NewMeetup.vue";
+import UserPage from "./views/UserPage.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -28,6 +29,10 @@ export default new Router({
     {
       path: "/about",
       component: About
+    },
+    {
+      path: "/userpage",
+      component: UserPage
     },
     {
       path: "/meetups",

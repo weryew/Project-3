@@ -45,7 +45,12 @@ const restaurantSchema = new Schema({
     }
   ],
   ratings: [ratingSchema],
-  meetups: [{}],
+  meetups: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Meetup"
+    }
+  ],
   average: Number
 });
 restaurantSchema.plugin(arrayUniquePlugin);

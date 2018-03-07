@@ -141,5 +141,11 @@ export default {
       .post(`/oneRest/addPerson`, { meetupId })
       .then(res => res.data)
       .catch(errHandler);
+  },
+  getMeetupsResto(id) {
+    return service
+      .get(`/oneRest/${id}/meetups`)
+      .then(res => res.data)
+      .catch(errHandler);
   }
 };

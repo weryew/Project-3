@@ -8,7 +8,19 @@ const userSchema = new Schema({
   role: {
     type: String,
     enum: ["user", "admin"]
-  }
+  },
+  meetupsCreated: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Meetup"
+    }
+  ],
+  meetupsJoined: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Meetup"
+    }
+  ]
 });
 
 userSchema.plugin(passportLocalMongoose);

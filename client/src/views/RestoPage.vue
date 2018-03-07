@@ -46,9 +46,9 @@
 
 <!-- meetups -->
 
-<div>
+<div v-if="meetups">
   <h5 >Meetups in {{resto.name}} restaurant </h5>
-  <div v-for="(meetup,i) in resto.meetups" :key="i">
+  <div v-for="(meetup,i) in meetups" :key="i">
     <div id="movie-card-list" >
   <meet-up :meetup="meetup" > </meet-up>
   </div>
@@ -79,6 +79,7 @@ export default {
   data() {
     return {
       resto: null,
+      meetups: null,
       dish: null,
       rating: null,
       comment: null
@@ -87,6 +88,9 @@ export default {
   created() {
     api.getResto(this.$route.params.id).then(resto => {
       this.resto = resto;
+      return api.getMeetupsResto(this.resto._id).then(res => {
+        this.meetups = res;
+      });
 
       console.log(this.photo);
     });
