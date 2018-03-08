@@ -2,7 +2,7 @@
 <div >
   <b-card style="width:300px">
     <router-link :to="`/resto/${resto._id}`">
-    <h1 class="router">{{resto.name}}</h1>
+    <h2 class="router">{{resto.name}}</h2>
     </router-link>
    <figure >
     <img :src="resto.photo">

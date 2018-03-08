@@ -10,6 +10,7 @@
             <div class="card-body">
               <h5 class="card-title"></h5>
               <p class="card-text">{{recipe._dish.name}}</p>
+              <br>
               <router-link :to="`/${recipe._dish._id}/recipe`" class="btn btn-primary" id="btn">Go back to the recipe</router-link>
             </div>
           </div>
@@ -33,6 +34,7 @@
             <div class="card-body">
               <h5 class="card-title"></h5>
               <p class="card-text">{{resto.name}}</p>
+              <br>
               <router-link :to="`/resto/${resto._id}`" class="btn btn-primary" id="btn">Go back to the restaurant</router-link>
             </div>
           </div>

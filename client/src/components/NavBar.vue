@@ -41,10 +41,10 @@
         <router-link to="/newResto" v-if="$root.user.role===`admin`" class="navbar-item">
           Admin
         </router-link>
-        <router-link to="/login" class="navbar-item" @click="logout">
+        <a class="navbar-item" @click="logout">
           <span class="glyphicon glyphicon-log-out"></span>
 
-        </router-link>
+        </a>
 
       </div>
     </div>
@@ -55,30 +55,30 @@
 
 
 <script>
-  import api from "../api";
-  export default {
-    data() {
-      return {
-        isActive: false
-      };
-    },
-    methods: {
-      logout() {
-        api.logout();
-        this.$root.user = null;
-        this.$router.push("/login");
-      }
+import api from "../api";
+export default {
+  data() {
+    return {
+      isActive: false
+    };
+  },
+  methods: {
+    logout() {
+      api.logout();
+      this.$root.user = null;
+      this.$router.push("/login");
     }
-  };
+  }
+};
 </script>
 <style>
-  .navbar-menu {
-    background-color: #5d7d32;
-  }
+.navbar-menu {
+  background-color: #5d7d32;
+}
 
-  .navbar-item {
-    color: white;
-    font-weight: bolder;
-    font-size: 1.3em;
-  }
+.navbar-item {
+  color: white;
+  font-weight: bolder;
+  font-size: 1.3em;
+}
 </style>

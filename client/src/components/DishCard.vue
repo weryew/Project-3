@@ -2,7 +2,7 @@
   <div >
      <b-card style="width:300px">
     <router-link :to="`/${id}`"  align= "center" >
-    <h1 class="router" >{{name}}</h1>
+    <h2 class="router" >{{name}}</h2>
     </router-link>
 
 
