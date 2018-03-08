@@ -1,39 +1,35 @@
 <template>
-<section class="section container">
-  <div  align="center" >
-    <h2>Create a new Meetup</h2>
-    <br>
-    
-    <b-card style="width:500px">
+  <section class="section container">
+    <div align="center">
+      <h2>Create a new Meetup</h2>
+      <br>
 
-    <b-form  >
+      <b-card style="width:500px">
 
-      <b-form-group label="Title">
-        <b-form-input type="text" v-model="title" required placeholder="Enter your Meetup title">
-        </b-form-input>
-      </b-form-group>                  
-                      
+        <b-form>
 
-      <b-form-group label="Date">    
-       <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <date-picker v-model="date"  :config="config"></date-picker>
-      </div>
+          <b-form-group label="Title">
+            <b-form-input type="text" v-model="title" required placeholder="Enter your Meetup title">
+            </b-form-input>
+          </b-form-group>
+
+
+          <b-form-group label="Date">
+            
+              <div class="row">
+                <div class="col-md-12">
+                  <date-picker v-model="date" :config="config"></date-picker>
+                </div>
+              </div>
+            
+
+
+          </b-form-group>
+          <b-button id="btn" @click="saveMeetup">Save Meetup</b-button>
+        </b-form>
+      </b-card>
     </div>
-    </div>
-              
-  
-      </b-form-group>
-
-
-  
-
-      <b-button id="btn" @click="saveMeetup">Save Meetup</b-button>
-    </b-form>
-    </b-card>
-  </div>
-  </section> 
+  </section>
 </template>
 
 <script>

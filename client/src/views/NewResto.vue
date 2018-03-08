@@ -23,7 +23,7 @@
       </b-form-group>
 
       <b-form-group label="Photo">                
-    <input type="file" class="form-control-file"  name="photo"  :v-model="photo">  
+        <input type="file" class="form-control-file" ref="file" name="photo"  @change="processFile($event)" />  
   
       </b-form-group>
   
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import api from "../api";
 import VueGoogleAutocomplete from "vue-google-autocomplete";
 
@@ -67,21 +68,51 @@ export default {
   //   this.$refs.address.focus();
   // },
   methods: {
+    processFile(event) {
+      this.photo = this.$refs.file.files[0];
+    },
     saveResto() {
+      console.log("DEBUG this.photo", this.photo);
+
+      let formData = new FormData();
+      const address = {
+        lat: this.lat,
+        lng: this.lng
+      };
+      formData.append("photo", this.photo);
+      formData.append("name", this.name);
+      formData.append("url", this.url);
+      formData.append("address[lat]", this.address.lat);
+      formData.append("address[lng]", this.address.lng);
       api
-        .addResto({
-          name: this.name,
-          url: this.url,
-          photo: this.photo,
-          address: {
-            lat: this.lat,
-            lng: this.lng
-          },
-          fullAddress: this.fullAddress
-        })
+        .addResto(formData)
         .then(resto => {
           this.$router.push(`/resto/${resto._id}/addDish`);
+        })
+        .catch(res => {
+          console.log("FAILURE!!");
         });
+
+      // axios.post("http://localhost:3000/api/restaurants", formData, {
+      //   headers: {
+      //     "Content-Type": "multipart/form-data"
+      //   }
+      // });
+
+      // api
+      //   .addResto({
+      //     name: this.name,
+      //     url: this.url,
+      //     photo: this.photo,
+      //     address: {
+      //       lat: this.lat,
+      //       lng: this.lng
+      //     },
+      //     fullAddress: this.fullAddress
+      //   })
+      //   .then(resto => {
+      //     this.$router.push(`/resto/${resto._id}/addDish`);
+      //   });
     },
     setPlace(place) {
       this.place = place;

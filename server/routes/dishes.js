@@ -7,7 +7,10 @@ const User = require("../models/user");
 const Restaurant = require("../models/restaurant");
 const Meetup = require("../models/meetup");
 const config = require("../config");
-
+const multer = require("multer");
+const upload = multer({
+  dest: "./public/uploads/"
+});
 //get all the dishes with the name:dishname
 router.get("/dishes/:query", (req, res, next) => {
   const query = req.params.query.toUpperCase();
@@ -36,22 +39,32 @@ router.get("/dishes/oneDish/:dishId", (req, res, next) => {
 
 //get a recipe of the dish
 router.get("/dishes/:dishId/recipe", (req, res, next) => {
-  Recipe.find({ _dish: req.params.dishId }, (err, recipe) => {
-    if (err) {
-      next(err);
+  Recipe.find(
+    {
+      _dish: req.params.dishId
+    },
+    (err, recipe) => {
+      if (err) {
+        next(err);
+      }
+      res.json(recipe);
     }
-    res.json(recipe);
-  });
+  );
 });
 
 //get all the restaurants which prepare the dish
 router.get("/dishes/:dishId/restaurants", (req, res, next) => {
-  Restaurant.find({ dishes: req.params.dishId }, (err, restaurants) => {
-    if (err) {
-      next(err);
+  Restaurant.find(
+    {
+      dishes: req.params.dishId
+    },
+    (err, restaurants) => {
+      if (err) {
+        next(err);
+      }
+      res.json(restaurants);
     }
-    res.json(restaurants);
-  });
+  );
 });
 
 //get details of one restaurant
@@ -69,48 +82,57 @@ router.post(
   "/dishes/:dishId/recipeReview",
   passport.authenticate("jwt", config.jwtSession),
   (req, res, next) => {
-    Recipe.findOne({ _dish: req.params.dishId }, (err, recipe) => {
-      if (err) return next(err);
-      console.log(recipe);
-      recipe.ratings = recipe.ratings || [];
-      const rating = recipe.ratings.find(rating =>
-        rating._user.equals(req.user._id)
-      );
+    Recipe.findOne(
+      {
+        _dish: req.params.dishId
+      },
+      (err, recipe) => {
+        if (err) return next(err);
+        console.log(recipe);
+        recipe.ratings = recipe.ratings || [];
+        const rating = recipe.ratings.find(rating =>
+          rating._user.equals(req.user._id)
+        );
 
-      const comment = recipe.ratings.find(r => r._user.equals(req.user._id));
-      if (rating && comment) {
-        rating.value = req.body.value;
-        rating.comment = req.body.comment;
-        rating.date = new Date();
-      } else {
-        recipe.ratings.push({
-          _user: req.user._id,
-          value: req.body.value,
-          comment: req.body.comment,
-          date: new Date(),
-          name: req.user.name,
-          photo: req.user.photo
-        });
-      }
-
-      let s = 0;
-      recipe.ratings.forEach(r => {
-        s = s + parseInt(r.value);
-      });
-      recipe.average = s / recipe.ratings.length * 20;
-
-      User.findByIdAndUpdate(
-        req.user._id,
-        { $push: { recipesCommented: recipe._id } },
-        (err, user) => {
-          if (err) return next(err);
-          recipe.save(err => {
-            if (err) return next(err);
-            res.json(recipe);
+        const comment = recipe.ratings.find(r => r._user.equals(req.user._id));
+        if (rating && comment) {
+          rating.value = req.body.value;
+          rating.comment = req.body.comment;
+          rating.date = new Date();
+        } else {
+          recipe.ratings.push({
+            _user: req.user._id,
+            value: req.body.value,
+            comment: req.body.comment,
+            date: new Date(),
+            name: req.user.name,
+            photo: req.user.photo
           });
         }
-      );
-    });
+
+        let s = 0;
+        recipe.ratings.forEach(r => {
+          s = s + parseInt(r.value);
+        });
+        recipe.average = s / recipe.ratings.length * 20;
+
+        User.findByIdAndUpdate(
+          req.user._id,
+          {
+            $push: {
+              recipesCommented: recipe._id
+            }
+          },
+          (err, user) => {
+            if (err) return next(err);
+            recipe.save(err => {
+              if (err) return next(err);
+              res.json(recipe);
+            });
+          }
+        );
+      }
+    );
   }
 );
 
@@ -119,11 +141,16 @@ router.get(
   "/dishes/:dishId/reviews",
   passport.authenticate("jwt", config.jwtSession),
   (req, res, next) => {
-    Recipe.findOne({ _dish: req.params.dishId }, (err, recipe) => {
-      if (err) return next(err);
-      console.log(recipe);
-      res.json(recipe);
-    });
+    Recipe.findOne(
+      {
+        _dish: req.params.dishId
+      },
+      (err, recipe) => {
+        if (err) return next(err);
+        console.log(recipe);
+        res.json(recipe);
+      }
+    );
   }
 );
 
@@ -164,7 +191,11 @@ router.post(
 
       User.findByIdAndUpdate(
         req.user._id,
-        { $push: { restosCommented: resto._id } },
+        {
+          $push: {
+            restosCommented: resto._id
+          }
+        },
         (err, user) => {
           if (err) return next(err);
           resto.save(err => {
@@ -191,11 +222,11 @@ router.get(
 );
 
 //add a dish
-router.post("/dishes/newDish", (req, res, next) => {
-  const { name, photo, description } = req.body;
+router.post("/dishes/newDish", upload.single("photo"), (req, res, next) => {
+  const { name, description } = req.body;
   const dish = new Dish({
     name,
-    photo,
+    photo: `/uploads/${req.file.filename}`,
     description
   });
   Dish.create(dish, err => {
@@ -209,7 +240,11 @@ router.post("/dishes/oneRest/:restId", (req, res, next) => {
   const dishId = req.body.dishId;
   Restaurant.findByIdAndUpdate(
     req.params.restId,
-    { $push: { dishes: dishId } },
+    {
+      $push: {
+        dishes: dishId
+      }
+    },
     (err, restaurant) => {
       console.log(restaurant);
       // restaurant.save(err => {
@@ -229,8 +264,11 @@ router.post("/dishes/oneRest/:restId", (req, res, next) => {
 //   };
 // }
 
-router.post("/restaurants", (req, res, next) => {
-  const { name, url, address, photo, fullAddress } = req.body;
+router.post("/restaurants", upload.single("photo"), (req, res, next) => {
+  console.log("DEBUG req.file", req.file);
+
+  const photo = `/uploads/${req.file.filename}`;
+  const { name, url, address, fullAddress } = req.body;
   const restaurant = new Restaurant({
     name,
     url,
@@ -284,13 +322,21 @@ router.post(
 
     Restaurant.findByIdAndUpdate(
       req.params.restId,
-      { $push: { meetups: meetup } },
+      {
+        $push: {
+          meetups: meetup
+        }
+      },
       (err, restaurant) => {
         if (err) return next(err);
 
         User.findByIdAndUpdate(
           req.user._id,
-          { $push: { meetupsCreated: meetup } },
+          {
+            $push: {
+              meetupsCreated: meetup
+            }
+          },
           (err, user) => {
             if (err) return next(err);
 
@@ -313,12 +359,20 @@ router.post(
     const meetupId = req.body.meetupId;
     Meetup.findByIdAndUpdate(
       meetupId,
-      { $inc: { person: 1 } },
+      {
+        $inc: {
+          person: 1
+        }
+      },
       (err, meetup) => {
         if (err) return next(err);
         User.findByIdAndUpdate(
           req.user._id,
-          { $push: { meetupsJoined: meetup } },
+          {
+            $push: {
+              meetupsJoined: meetup
+            }
+          },
           (err, user) => {
             if (err) return next(err);
             res.json(meetup);

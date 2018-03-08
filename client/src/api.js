@@ -110,9 +110,13 @@ export default {
       .catch(errHandler);
   },
   //add a restaurant
-  addResto(resto) {
+  addResto(formData) {
     return service
-      .post("/restaurants", resto)
+      .post("/restaurants", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      })
       .then(res => res.data)
       .catch(errHandler);
   },
