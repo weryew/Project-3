@@ -3,11 +3,13 @@ const passport = require("passport");
 const router = express.Router();
 const Dish = require("../models/dish");
 const Recipe = require("../models/recipe");
+const User = require("../models/user");
 const Restaurant = require("../models/restaurant");
+const Meetup = require("../models/meetup");
 const config = require("../config");
-var mongoose = require("mongoose");
+
 //get all the dishes with the name:dishname
-router.get("/:query", (req, res, next) => {
+router.get("/dishes/:query", (req, res, next) => {
   const query = req.params.query.toUpperCase();
   Dish.find({}, (err, results) => {
     if (err) {
@@ -22,7 +24,7 @@ router.get("/:query", (req, res, next) => {
 });
 
 //get details of the dish
-router.get("/oneDish/:dishId", (req, res, next) => {
+router.get("/dishes/oneDish/:dishId", (req, res, next) => {
   const id = req.params.dishId;
   Dish.findById(id, (err, dish) => {
     if (err) {
@@ -33,7 +35,7 @@ router.get("/oneDish/:dishId", (req, res, next) => {
 });
 
 //get a recipe of the dish
-router.get("/:dishId/recipe", (req, res, next) => {
+router.get("/dishes/:dishId/recipe", (req, res, next) => {
   Recipe.find({ _dish: req.params.dishId }, (err, recipe) => {
     if (err) {
       next(err);
@@ -43,7 +45,7 @@ router.get("/:dishId/recipe", (req, res, next) => {
 });
 
 //get all the restaurants which prepare the dish
-router.get("/:dishId/restaurants", (req, res, next) => {
+router.get("/dishes/:dishId/restaurants", (req, res, next) => {
   Restaurant.find({ dishes: req.params.dishId }, (err, restaurants) => {
     if (err) {
       next(err);
@@ -53,28 +55,23 @@ router.get("/:dishId/restaurants", (req, res, next) => {
 });
 
 //get details of one restaurant
-router.get("/oneRest/:restId", (req, res, next) => {
+router.get("/dishes/oneRest/:restId", (req, res, next) => {
   Restaurant.findById(req.params.restId, (err, rest) => {
     if (err) {
       next(err);
     }
-    // const dishes = rest.dishes.forEach(dish => {
-    //   Dish.findById(dish._dish, (err, dish) => {
-    //     if (err) throw err;
-    //   });
-    // });
-    // console.log(dishes);
     res.json(rest);
   });
 });
 
 //add a review to a recipe
 router.post(
-  "/:dishId/recipeReview",
+  "/dishes/:dishId/recipeReview",
   passport.authenticate("jwt", config.jwtSession),
   (req, res, next) => {
     Recipe.findOne({ _dish: req.params.dishId }, (err, recipe) => {
       if (err) return next(err);
+      console.log(recipe);
       recipe.ratings = recipe.ratings || [];
       const rating = recipe.ratings.find(rating =>
         rating._user.equals(req.user._id)
@@ -85,7 +82,6 @@ router.post(
         rating.value = req.body.value;
         rating.comment = req.body.comment;
         rating.date = new Date();
-        console.log("hi", rating);
       } else {
         recipe.ratings.push({
           _user: req.user._id,
@@ -96,72 +92,106 @@ router.post(
           photo: req.user.photo
         });
       }
-      console.log("rating", req.body.value);
+
       let s = 0;
       recipe.ratings.forEach(r => {
         s = s + parseInt(r.value);
       });
       recipe.average = s / recipe.ratings.length * 20;
 
-      recipe.save(err => {
-        if (err) return next(err);
-        res.json(recipe);
-      });
+      User.findByIdAndUpdate(
+        req.user._id,
+        { $push: { recipesCommented: recipe._id } },
+        (err, user) => {
+          if (err) return next(err);
+          recipe.save(err => {
+            if (err) return next(err);
+            res.json(recipe);
+          });
+        }
+      );
     });
   }
 );
 
-//get all the reviews
+//get all the reviews of a recipe
 router.get(
-  "/:dishId/reviews",
-  // passport.authenticate("jwt", config.jwtSession),
+  "/dishes/:dishId/reviews",
+  passport.authenticate("jwt", config.jwtSession),
   (req, res, next) => {
     Recipe.findOne({ _dish: req.params.dishId }, (err, recipe) => {
       if (err) return next(err);
-
-      res.json(recipe.ratings);
+      console.log(recipe);
+      res.json(recipe);
     });
   }
 );
 
 //add a review to a resto
 router.post(
-  "/:restoId/restoReview",
+  "/oneRest/:restId/restoReview",
   passport.authenticate("jwt", config.jwtSession),
   (req, res, next) => {
-    Restaurant.findById(req.params.restoId, (err, restaurant) => {
-      console.log(restaurant);
+    Restaurant.findById(req.params.restId, (err, resto) => {
       if (err) return next(err);
-      restaurant.ratings = restaurant.ratings || [];
-      const rating = restaurant.ratings.find(r => r._user.equals(req.user._id));
-      const comment = restaurant.ratings.find(r =>
-        r._user.equals(req.user._id)
+      console.log(resto);
+      resto.ratings = resto.ratings || [];
+      const rating = resto.ratings.find(rating =>
+        rating._user.equals(req.user._id)
       );
+
+      const comment = resto.ratings.find(r => r._user.equals(req.user._id));
       if (rating && comment) {
-        rating.value = req.body.rating;
+        rating.value = req.body.value;
         rating.comment = req.body.comment;
+        rating.date = new Date();
       } else {
-        restaurant.ratings.push({
+        resto.ratings.push({
           _user: req.user._id,
-          value: req.body.rating,
-          comment: req.body.comment
+          value: req.body.value,
+          comment: req.body.comment,
+          date: new Date(),
+          name: req.user.name,
+          photo: req.user.photo
         });
       }
+
       let s = 0;
-      restaurant.ratings.forEach(r => {
+      resto.ratings.forEach(r => {
         s = s + parseInt(r.value);
       });
-      restaurant.average = s / restaurant.ratings.length * 20;
-      restaurant.save(err => {
-        if (err) return next(err);
-        res.json(restaurant);
-      });
+      resto.average = s / resto.ratings.length * 20;
+
+      User.findByIdAndUpdate(
+        req.user._id,
+        { $push: { restosCommented: resto._id } },
+        (err, user) => {
+          if (err) return next(err);
+          resto.save(err => {
+            if (err) return next(err);
+            res.json(resto);
+          });
+        }
+      );
+    });
+  }
+);
+
+//get all the reviews of a restaurant
+router.get(
+  "/dishes/:restoId/reviewsResto",
+  passport.authenticate("jwt", config.jwtSession),
+  (req, res, next) => {
+    Restaurant.findById(req.params.restoId, (err, resto) => {
+      if (err) return next(err);
+      console.log(resto);
+      res.json(resto);
     });
   }
 );
 
 //add a dish
-router.post("/newDish", (req, res, next) => {
+router.post("/dishes/newDish", (req, res, next) => {
   const { name, photo, description } = req.body;
   const dish = new Dish({
     name,
@@ -175,7 +205,7 @@ router.post("/newDish", (req, res, next) => {
 });
 
 //add dishes to a new resto
-router.post("/oneRest/:restId", (req, res, next) => {
+router.post("/dishes/oneRest/:restId", (req, res, next) => {
   const dishId = req.body.dishId;
   Restaurant.findByIdAndUpdate(
     req.params.restId,
@@ -189,5 +219,137 @@ router.post("/oneRest/:restId", (req, res, next) => {
     }
   );
 });
+
+// function checkRole(role) {
+//   return (req, res, next) => {
+//     if (req.user.role !== role) {
+//       //to be checked
+//       res.redirect("/");
+//     } else next();
+//   };
+// }
+
+router.post("/restaurants", (req, res, next) => {
+  const { name, url, address, photo, fullAddress } = req.body;
+  const restaurant = new Restaurant({
+    name,
+    url,
+    address,
+    photo,
+    fullAddress
+  });
+  Restaurant.create(restaurant, err => {
+    if (err) {
+      console.log("create", err);
+      return next(err);
+    }
+    res.json(restaurant);
+  });
+});
+
+//get all meetups
+router.get("/restaurants/meetups", (req, res, next) => {
+  Meetup.find({}, (err, results) => {
+    if (err) return next(err);
+    console.log(results);
+    res.json(results);
+  });
+});
+
+//get meetups for a resto
+router.get("/oneRest/:restId/meetups", (req, res, next) => {
+  Restaurant.findById(req.params.restId)
+    .populate("meetups")
+    .exec((err, resto) => {
+      if (err) return next(err);
+
+      res.json(resto.meetups);
+    });
+});
+//add a meetup
+router.post(
+  "/oneRest/:restId/addMeetup",
+  passport.authenticate("jwt", config.jwtSession),
+  (req, res, next) => {
+    const { title, date, created, person, address, creator, photo } = req.body;
+    const meetup = new Meetup({
+      title,
+      date,
+      created,
+      person,
+      address,
+      creator,
+      photo
+    });
+
+    Restaurant.findByIdAndUpdate(
+      req.params.restId,
+      { $push: { meetups: meetup } },
+      (err, restaurant) => {
+        if (err) return next(err);
+
+        User.findByIdAndUpdate(
+          req.user._id,
+          { $push: { meetupsCreated: meetup } },
+          (err, user) => {
+            if (err) return next(err);
+
+            Meetup.create(meetup, err => {
+              if (err) return next(err);
+              res.json(meetup);
+            });
+          }
+        );
+      }
+    );
+  }
+);
+
+//join a meetup
+router.post(
+  `/oneRest/addPerson`,
+  passport.authenticate("jwt", config.jwtSession),
+  (req, res, next) => {
+    const meetupId = req.body.meetupId;
+    Meetup.findByIdAndUpdate(
+      meetupId,
+      { $inc: { person: 1 } },
+      (err, meetup) => {
+        if (err) return next(err);
+        User.findByIdAndUpdate(
+          req.user._id,
+          { $push: { meetupsJoined: meetup } },
+          (err, user) => {
+            if (err) return next(err);
+            res.json(meetup);
+          }
+        );
+      }
+    );
+  }
+);
+//get all the meetups joined and created by the user
+router.get(
+  "/userPage",
+  passport.authenticate("jwt", config.jwtSession),
+  (req, res, err) => {
+    User.findById(req.user._id)
+      .populate("meetupsJoined")
+      .populate("meetupsCreated")
+      .populate({
+        path: "recipesCommented",
+        populate: {
+          path: "_dish",
+          model: "Dish"
+        }
+      })
+      .populate("restosCommented")
+      .exec((err, user) => {
+        if (err) return next(err);
+        console.log(user);
+        res.json(user);
+      });
+  }
+);
 
 module.exports = router;

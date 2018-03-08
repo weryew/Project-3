@@ -1,6 +1,7 @@
 <template>
 
-<div id="content" role="main"><section class="section">
+<div id="content" role="main">
+  <section class="section">
   <div class="container" >
 
    
@@ -20,9 +21,17 @@
 <br>
 <br>
 </div>
+
+<!-- List of reviews -->
+<div class="section">
+<h4> Reviews </h4>
+<br>
+<div  v-if="reviews">
+  <Comment-card :ratings="reviews"></comment-card>
+</div> 
 <!-- Add a review -->
-<!-- <div>
-  <h5 >How much did you like this restaurant?</h5>
+<div class="section">
+  <h5 >How much did you like this Restaurant?</h5>
   <br>
     <star-rating v-model="rating"  ></star-rating>
     <br>
@@ -36,13 +45,9 @@
         <span style="color:white" >save review</span>
         </button>
     </div>
-</div> -->
-<!-- List of reviews -->
-<!-- <div  v-if="resto.reviews">
-<div v-for="(review,i) in resto.reviews" :key="i">
-<review-card :comment="review.comment" :rating="review.value" ></review-card>
 </div>
-</div> -->
+</div>
+
 
 <!-- meetups -->
 
@@ -68,36 +73,48 @@
 import api from "../api";
 import StarRating from "vue-star-rating";
 import MeetUp from "../components/MeetUp";
+import CommentCard from "../components/CommentCard";
 export default {
-  methods: {
-    saveReview() {
-      api
-        .addReviewResto(this.$route.params.id, this.rating, this.comment)
-        .then(console.log("reviews done"));
-    }
-  },
   data() {
     return {
       resto: null,
       meetups: null,
-      dish: null,
       rating: null,
-      comment: null
+      comment: null,
+      reviews: null
     };
+  },
+  methods: {
+    saveReview() {
+      this.review = {
+        value: this.rating,
+        comment: this.comment,
+        date: new Date(),
+        name: this.$root.user.name,
+        photo: this.$root.user.photo
+      };
+      api.addReviewResto(this.$route.params.id, this.review).then(res => {
+        console.log(this.review);
+      });
+    }
   },
   created() {
     api.getResto(this.$route.params.id).then(resto => {
       this.resto = resto;
-      return api.getMeetupsResto(this.resto._id).then(res => {
-        this.meetups = res;
-      });
+      console.log(this.resto._id);
+    });
+    api.getMeetupsResto(this.$route.params.id).then(res => {
+      this.meetups = res;
+    });
 
-      console.log(this.photo);
+    api.getReviewsResto(this.$route.params.id).then(reviews => {
+      this.reviews = reviews;
     });
   },
   components: {
     StarRating,
-    MeetUp
+    MeetUp,
+    CommentCard
   }
 };
 </script>

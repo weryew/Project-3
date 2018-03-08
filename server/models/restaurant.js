@@ -5,32 +5,19 @@ const arrayUniquePlugin = require("mongoose-unique-array");
 const ratingSchema = new Schema({
   _user: {
     type: Schema.Types.ObjectId,
-    ref: "User"
-    // unique: true
+    ref: "User",
+    unique: true
   },
   comment: String,
   value: {
     type: Number,
     min: 1,
     max: 5
-  }
+  },
+  date: Date,
+  name: String,
+  photo: String
 });
-
-// const meetupSchema = new Schema({
-//   title: String,
-//   photo: String,
-//   address: String,
-//   date: Date,
-//   created: Date,
-//   person: Number,
-//   creator: {
-//     name: String,
-//     creatorId: {
-//       type: Schema.Types.ObjectId,
-//       ref: "User"
-//     }
-//   }
-// });
 
 const restaurantSchema = new Schema({
   name: String,

@@ -56,8 +56,7 @@ const strategy = new Strategy(
 passport.use(strategy);
 
 app.use("/api", require("./routes/auth"));
-app.use("/api/dishes", require("./routes/dishes"));
-app.use("/api", require("./routes/restaurants"));
+app.use("/api", require("./routes/dishes"));
 
 app.get(
   "/api/secret",

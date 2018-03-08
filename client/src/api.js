@@ -89,9 +89,9 @@ export default {
       .catch(errHandler);
   },
   //add review to a resto
-  addReviewResto(id, rating, comment) {
+  addReviewResto(id, review) {
     return service
-      .post(`dishes/${id}/restoReview`, { rating, comment })
+      .post(`/oneRest/${id}/restoReview`, review)
       .then(res => res.data)
       .catch(errHandler);
   },
@@ -100,6 +100,13 @@ export default {
     return service
       .get(`dishes/${id}/reviews`)
       .then(res => res.data)
+      .catch(errHandler);
+  },
+  //get all the reviews of a resto
+  getReviewsResto(id) {
+    return service
+      .get(`dishes/${id}/reviewsResto`)
+      .then(res => res.data.ratings)
       .catch(errHandler);
   },
   //add a restaurant
@@ -151,14 +158,26 @@ export default {
 
   getCreated() {
     return service
-      .get("/meetups")
+      .get("/userPage")
       .then(res => res.data.meetupsCreated)
       .catch(errHandler);
   },
   getJoined() {
     return service
-      .get("/meetups")
+      .get("/userPage")
       .then(res => res.data.meetupsJoined)
+      .catch(errHandler);
+  },
+  getCommentRecipe() {
+    return service
+      .get("/userPage")
+      .then(res => res.data.recipesCommented)
+      .catch(errHandler);
+  },
+  getCommentResto() {
+    return service
+      .get("/userPage")
+      .then(res => res.data.restosCommented)
       .catch(errHandler);
   }
 };

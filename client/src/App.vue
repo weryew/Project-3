@@ -12,7 +12,7 @@
      <div class="container">
        <div class="content has-text-centered">
          <p>
-           <strong>CoolAParis</strong> </p>
+           <strong>© 2018 CoolAParis </strong> Created by Meriem BOURBIA </p>
        </div>
      </div>
    </footer>
@@ -22,6 +22,7 @@
 <script>
 import NavBar from "./components/NavBar";
 import api from "./api";
+
 export default {
   created() {
     const user = api.loadUser();
@@ -30,7 +31,7 @@ export default {
   components: { NavBar }
 };
 </script>
-<style>
+<style >
 @import url("https://fonts.googleapis.com/css?family=Courgette");
 @import url("https://fonts.googleapis.com/css?family=Josefin+Sans");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,600,700");

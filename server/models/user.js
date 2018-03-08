@@ -20,6 +20,18 @@ const userSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: "Meetup"
     }
+  ],
+  recipesCommented: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Recipe"
+    }
+  ],
+  restosCommented: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Restaurant"
+    }
   ]
 });
 
