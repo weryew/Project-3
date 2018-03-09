@@ -52,14 +52,11 @@ export default {
       name: "",
       url: "",
       photo: "",
-      lat: "",
-      lng: "",
+      lat: null,
+      lng: null,
       place: "",
-      address: {
-        lat: 0,
-        lng: 0
-      },
-      fullAddress: ""
+      fullAddress: "",
+      address: {}
     };
   },
   // mounted() {
@@ -72,18 +69,13 @@ export default {
       this.photo = this.$refs.file.files[0];
     },
     saveResto() {
-      console.log("DEBUG this.photo", this.photo);
-
       let formData = new FormData();
-      const address = {
-        lat: this.lat,
-        lng: this.lng
-      };
       formData.append("photo", this.photo);
       formData.append("name", this.name);
       formData.append("url", this.url);
-      formData.append("address[lat]", this.address.lat);
-      formData.append("address[lng]", this.address.lng);
+      formData.append("address[lat]", this.lat);
+      formData.append("address[lng]", this.lng);
+      formData.append("fullAddress", this.fullAddress);
       api
         .addResto(formData)
         .then(resto => {
@@ -119,6 +111,7 @@ export default {
       this.lat = place.geometry.viewport.b.b;
       this.lng = place.geometry.viewport.f.b;
       this.fullAddress = place.formatted_address;
+      console.log(place.formatted_address);
     }
   },
   components: { VueGoogleAutocomplete }
