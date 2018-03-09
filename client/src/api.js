@@ -46,6 +46,13 @@ export default {
     }
     return false;
   },
+  //get all dishes
+  // getAllDishes() {
+  //   return service
+  //     .get(`/dishes`)
+  //     .then(res => res.data)
+  //     .catch(errHandler);
+  // },
   //search dishes containing the query
   search(query) {
     return service

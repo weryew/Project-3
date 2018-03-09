@@ -52,7 +52,7 @@
 <!-- meetups -->
 
 <div v-if="meetups">
-  <h5 >Meetups in {{resto.name}} restaurant </h5>
+  <h5 >Meetups in {{resto.name}}  </h5>
   <div v-for="(meetup,i) in meetups" :key="i">
     <div id="movie-card-list" >
   <meet-up :meetup="meetup" > </meet-up>

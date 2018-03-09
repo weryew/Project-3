@@ -28,7 +28,7 @@
       </b-form-group>
   
     <b-form-group label="URL">                
-   <b-form-input maxlength="30" v-model="url" placeholder="Enter your restaurant" >
+   <b-form-input maxlength="30" v-model="url" placeholder="Enter your restaurant website" >
     </b-form-input>
       </b-form-group>
 

@@ -11,6 +11,14 @@ const multer = require("multer");
 const upload = multer({
   dest: "./public/uploads/"
 });
+
+//get all dishes
+router.get("/dishes", (req, res, next) => {
+  Dish.find({}, (err, results) => {
+    if (err) return next(err);
+    res.json(results);
+  });
+});
 //get all the dishes with the name:dishname
 router.get("/dishes/:query", (req, res, next) => {
   const query = req.params.query.toUpperCase();

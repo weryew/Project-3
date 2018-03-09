@@ -117,9 +117,13 @@ h1 {
 }
 h2 {
   font-size: 2.1em;
+  font-family: "Courgette", sans-serif;
+  color: #5d7d32;
 }
 h3 {
   font-size: 1.8em;
+  font-family: "Courgette", sans-serif;
+  color: #5d7d32;
 }
 h4 {
   font-size: 1.6em;
