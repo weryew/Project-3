@@ -11,8 +11,7 @@
     <!-- star rating -->
 <div class="star-ratings-sprite"><span :style="`width:${resto.average}%`" class="star-ratings-sprite-rating"></span></div>
 <div class="section">
-<!-- <p>{{resto.url}}</p> -->
-
+<a :href="resto.url"></a>
 <br>
 <img :src="resto.photo">
   </div>    
@@ -101,7 +100,6 @@ export default {
   created() {
     api.getResto(this.$route.params.id).then(resto => {
       this.resto = resto;
-      console.log(this.resto._id);
     });
     api.getMeetupsResto(this.$route.params.id).then(res => {
       this.meetups = res;

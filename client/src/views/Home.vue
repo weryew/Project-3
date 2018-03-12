@@ -74,6 +74,10 @@ export default {
         {
           img:
             "http://i.huffpost.com/gadgets/slideshows/516662/slide_516662_7270262_compressed.jpg"
+        },
+        {
+          img:
+            "https://scontent.cdninstagram.com/t51.2885-15/s480x480/e35/c135.0.810.810/19227502_1185940804849159_9109633516080988160_n.jpg?ig_cache_key=MTUzNzE1MzU0MTQxOTY3NDQ4Mw%3D%3D.2.c"
         }
       ]
     };

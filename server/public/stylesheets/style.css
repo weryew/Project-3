@@ -3,6 +3,11 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Courgette", sans-serif;
+  color: #5d7d32;
 }
