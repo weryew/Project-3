@@ -57,27 +57,28 @@ export default {
       slides: [
         {
           img:
-            "http://www.la-cuisine-de-mes-racines.com/wp-content/uploads/2014/05/Photo-711.jpg"
+            "http://www.fatafeat.com/storage/recipes/NMA_S01_SH02_COUSCOUS_WITH_LAMB_IMG_6903_684166.jpg"
         },
         {
           img:
-            "https://scontent-sea1-1.cdninstagram.com/t51.2885-15/e35/18382012_162185234314223_3001169700148215808_n.jpg"
+            "http://www.fatafeat.com/storage/recipes/NMA_S01_SH13_BRICK_PARTY_ASSORTED_IMG_8372_949433.jpg"
         },
         {
           img:
-            "https://scontent.cdninstagram.com/t51.2885-15/s320x320/sh0.08/e35/26065881_144816039562264_5080520649844195328_n.jpg"
+            "http://www.fatafeat.com/storage/recipes/NMA_S01_SH02_TUNISIAN_BOUZA_WITH_HAZELNUTS_IMG_6934_292880.jpg"
         },
         {
           img:
-            "https://scontent-sea1-1.cdninstagram.com/vp/217c482f9341a586a531c001e8bdbc83/5B11A309/t51.2885-15/s480x480/e35/c0.120.958.958/17076442_232348673894984_3196029613293699072_n.jpg?ig_cache_key=MTQ2MDE4NDA2OTMzODA5MDczNA%3D%3D.2.c"
+            "http://www.fatafeat.com/storage/recipes/NMA_S01_SH03_MEAT_BALL_WITH_PICKLES_AND_OLIVE_TUN_IMG_6986_958432.jpg"
         },
         {
           img:
-            "http://i.huffpost.com/gadgets/slideshows/516662/slide_516662_7270262_compressed.jpg"
+            "http://www.fatafeat.com/storage/recipes/NMA_S01_SH10_TAGINE_MALSOUKA_IMG_7469_339979.jpg"
         },
+
         {
           img:
-            "https://scontent.cdninstagram.com/t51.2885-15/s480x480/e35/c135.0.810.810/19227502_1185940804849159_9109633516080988160_n.jpg?ig_cache_key=MTUzNzE1MzU0MTQxOTY3NDQ4Mw%3D%3D.2.c"
+            "http://www.fatafeat.com/storage/recipes/NMA_S01_SH06_TUNISIAN_SALAD_WITH_TUNA_IMG_7158_244546.jpg"
         }
       ]
     };
